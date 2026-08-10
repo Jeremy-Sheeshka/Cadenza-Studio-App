@@ -256,7 +256,7 @@ export default function Students() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((s) => (
             <Link key={s.id} to={`/students/${s.id}`}>
-              <Card className="transition-shadow hover:shadow-md h-full">
+              <Card className="transition-shadow hover:shadow-md h-full p-4">
                 <div className="flex items-start justify-between">
                   <div>
                     <p className="font-medium text-slate-900">
@@ -809,7 +809,7 @@ function OverviewTab({
   if (!editing) {
     return (
       <div className="grid gap-6 md:grid-cols-2">
-        <Card>
+        <Card className="p-4">
           <h2 className="mb-3 text-sm font-semibold text-slate-800">Contact</h2>
           <dl className="space-y-2 text-sm">
             <Row k="Email" v={student.email ?? '—'} />
@@ -818,7 +818,7 @@ function OverviewTab({
             <Row k="Adult" v={student.is_adult ? 'Yes' : 'No'} />
           </dl>
         </Card>
-        <Card>
+        <Card className="p-4">
           <h2 className="mb-3 text-sm font-semibold text-slate-800">Lesson Details</h2>
           <dl className="space-y-2 text-sm">
             <Row k="Instrument" v={student.instrument ?? '—'} />
@@ -828,7 +828,7 @@ function OverviewTab({
             <Row k="Monthly rate" v={fmtCurrency(student.monthly_rate)} />
           </dl>
         </Card>
-        <Card>
+        <Card className="p-4">
           <h2 className="mb-3 text-sm font-semibold text-slate-800">Status & Credits</h2>
           <dl className="space-y-2 text-sm">
             <Row k="Status" v={<Badge variant={STATUS_TONE[student.status] ?? 'slate'}>{student.status}</Badge>} />
@@ -836,7 +836,7 @@ function OverviewTab({
             <Row k="Family" v={student.family?.name ?? '—'} />
           </dl>
         </Card>
-        <Card>
+        <Card className="p-4">
           <h2 className="mb-3 text-sm font-semibold text-slate-800">Gamification</h2>
           <dl className="space-y-2 text-sm">
             <Row k="Level" v={String(student.level)} />
@@ -847,7 +847,7 @@ function OverviewTab({
           </dl>
         </Card>
         {student.notes && (
-          <Card className="md:col-span-2">
+          <Card className="p-4" className="md:col-span-2">
             <h2 className="mb-3 text-sm font-semibold text-slate-800">Notes</h2>
             <p className="text-sm text-slate-600 whitespace-pre-wrap">{student.notes}</p>
           </Card>
@@ -858,7 +858,7 @@ function OverviewTab({
 
   // Editing mode
   return (
-    <Card>
+    <Card className="p-4">
       <h2 className="mb-4 text-sm font-semibold text-slate-800">Edit Student</h2>
       <div className="grid gap-4 md:grid-cols-2">
         <div>
@@ -976,7 +976,7 @@ function ScheduleTab({
 }) {
   return (
     <div className="grid gap-6 md:grid-cols-2">
-      <Card>
+      <Card className="p-4">
         <h2 className="mb-3 text-sm font-semibold text-slate-800">Current Weekly Schedule</h2>
         {schedules.length === 0 ? (
           <p className="text-xs text-slate-400">No recurring schedule slots yet.</p>
@@ -995,7 +995,7 @@ function ScheduleTab({
           </div>
         )}
       </Card>
-      <Card>
+      <Card className="p-4">
         <h2 className="mb-3 text-sm font-semibold text-slate-800">Add Schedule Slot</h2>
         <form onSubmit={onAddSchedule} className="grid gap-3">
           <div>
@@ -1047,14 +1047,14 @@ function AttendanceTab({
 
   if (events.length === 0) {
     return (
-      <Card>
+      <Card className="p-4">
         <p className="text-xs text-slate-400">No past events found for this student.</p>
       </Card>
     )
   }
 
   return (
-    <Card>
+    <Card className="p-4">
       <h2 className="mb-3 text-sm font-semibold text-slate-800">Event History</h2>
       <div className="space-y-2">
         {events.map((ev) => {
@@ -1084,7 +1084,7 @@ function AttendanceTab({
 function NotesTab({ lessonNotes }: { lessonNotes: LessonNote[] }) {
   if (lessonNotes.length === 0) {
     return (
-      <Card>
+      <Card className="p-4">
         <p className="text-xs text-slate-400">No lesson notes yet.</p>
       </Card>
     )
@@ -1093,7 +1093,7 @@ function NotesTab({ lessonNotes }: { lessonNotes: LessonNote[] }) {
   return (
     <div className="space-y-3">
       {lessonNotes.map((note) => (
-        <Card key={note.id}>
+        <Card className="p-4" key={note.id}>
           <div className="flex items-start justify-between">
             <div>
               <p className="text-sm font-medium text-slate-800">
@@ -1136,7 +1136,7 @@ function PracticeTab({
 }) {
   return (
     <div className="grid gap-6 md:grid-cols-2">
-      <Card>
+      <Card className="p-4">
         <h2 className="mb-3 text-sm font-semibold text-slate-800">Practice Stats</h2>
         <dl className="space-y-2 text-sm">
           <Row k="Current streak" v={`🔥 ${student.practice_streak} day${student.practice_streak !== 1 ? 's' : ''}`} />
@@ -1146,7 +1146,7 @@ function PracticeTab({
           <Row k="Points" v={student.points.toLocaleString()} />
         </dl>
       </Card>
-      <Card>
+      <Card className="p-4">
         <h2 className="mb-3 text-sm font-semibold text-slate-800">Weekly Summaries</h2>
         {practiceSummaries.length === 0 ? (
           <p className="text-xs text-slate-400">No practice data yet.</p>
@@ -1174,7 +1174,7 @@ function PracticeTab({
 function AssignmentsTab({ assignments }: { assignments: Assignment[] }) {
   if (assignments.length === 0) {
     return (
-      <Card>
+      <Card className="p-4">
         <p className="text-xs text-slate-400">No assignments yet.</p>
       </Card>
     )
@@ -1185,7 +1185,7 @@ function AssignmentsTab({ assignments }: { assignments: Assignment[] }) {
       {assignments.map((a) => {
         const studentAssign = a.assignment_students?.[0]
         return (
-          <Card key={a.id}>
+          <Card className="p-4" key={a.id}>
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-800">{a.title}</p>

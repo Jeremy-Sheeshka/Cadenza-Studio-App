@@ -334,7 +334,7 @@ export default function Calendar() {
       {/* ── Sidebar ────────────────────────────────────────────────────── */}
       <aside className="w-56 shrink-0 space-y-4">
         {/* View toggle */}
-        <Card>
+        <Card className="p-4">
           <div className="flex rounded-lg bg-slate-100 p-0.5">
             {(['month', 'week', 'day'] as ViewMode[]).map((v) => (
               <button
@@ -351,7 +351,7 @@ export default function Calendar() {
         </Card>
 
         {/* Category filters */}
-        <Card>
+        <Card className="p-4">
           <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">Category</h3>
           <div className="space-y-1">
             {categories.map((c) => (
@@ -377,7 +377,7 @@ export default function Calendar() {
         </Card>
 
         {/* Location filters */}
-        <Card>
+        <Card className="p-3">
           <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">Location</h3>
           <div className="space-y-1">
             {locations.map((l) => (
@@ -402,7 +402,7 @@ export default function Calendar() {
         </Card>
 
         {/* Group lesson templates */}
-        <Card>
+        <Card className="p-3">
           <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">Group Templates</h3>
           <div className="space-y-1">
             {templates.map((t) => (

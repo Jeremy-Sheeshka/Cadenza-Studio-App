@@ -68,8 +68,8 @@ function SidebarContent({ onClick, collapsed }: { onClick?: () => void; collapse
   return (
     <>
       <div className="flex h-16 items-center gap-2 border-b border-slate-100 dark:border-slate-700 px-5">
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600">
-          <img src="/branding/logo.png" alt="Cadenza Studio" className="h-5 w-5 object-contain" />
+        <span className="flex h-10 w-10 items-center justify-center rounded-lg overflow-hidden shrink-0">
+          <img src="/branding/logo.png" alt="Cadenza Studio" className="h-full w-full object-contain" />
         </span>
         <span className="text-sm font-semibold dark:text-white">Cadenza Studio</span>
       </div>
@@ -178,7 +178,7 @@ export default function AppShell() {
 
       {/* Main content */}
       <main className={`flex-1 transition-all ${!collapsed ? 'md:ml-60' : 'md:ml-14'}`}>
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-6">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-14 md:pt-6 pb-6">
           <Outlet />
         </div>
       </main>

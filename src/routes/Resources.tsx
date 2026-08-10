@@ -119,17 +119,17 @@ function FolderSidebar({
 
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-50 w-60 transform bg-slate-800 text-slate-200 transition-transform duration-200 lg:static lg:z-0 lg:translate-x-0',
+          'fixed inset-y-0 left-0 z-50 w-60 transform bg-white text-slate-800 border border-slate-200 transition-transform duration-200 lg:static lg:z-0 lg:translate-x-0',
           'flex shrink-0 flex-col overflow-y-auto rounded-2xl',
           sidebarOpen ? 'translate-x-0' : '-translate-x-full',
         )}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-4 pt-5 pb-3">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-400">My Library</h2>
+          <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">My Library</h2>
           <button
             onClick={onCloseSidebar}
-            className="rounded-lg p-1 text-slate-400 hover:bg-slate-700 hover:text-slate-200 lg:hidden"
+            className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 lg:hidden"
           >
             <X className="h-4 w-4" />
           </button>
@@ -140,7 +140,7 @@ function FolderSidebar({
           <Button
             variant="secondary"
             size="sm"
-            className="w-full justify-start gap-2 bg-slate-700 text-slate-200 hover:bg-slate-600"
+            className="w-full justify-start gap-2 bg-slate-100 text-slate-700 hover:bg-slate-200"
             onClick={onNewFolder}
           >
             <FolderPlus className="h-4 w-4" />
@@ -155,8 +155,8 @@ function FolderSidebar({
             className={cn(
               'flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors',
               selectedFolderId === null
-                ? 'bg-blue-700/30 text-blue-300 font-medium'
-                : 'text-slate-300 hover:bg-slate-700/50',
+                ? 'bg-blue-50 text-blue-700 font-medium'
+                : 'text-slate-600 hover:bg-slate-100',
             )}
           >
             <Folder className="h-4 w-4 shrink-0" />
@@ -183,7 +183,7 @@ function FolderSidebar({
                   <Folder className="h-4 w-4 shrink-0" />
                   {isEditing ? (
                     <input
-                      className="flex-1 rounded border border-blue-500/50 bg-slate-700 px-1 py-0.5 text-sm text-slate-100 outline-none"
+                      className="flex-1 rounded border border-blue-500/50 bg-slate-100 px-1 py-0.5 text-sm text-slate-800 outline-none"
                       value={editValue}
                       onChange={(e) => onEditChange(e.target.value)}
                       onBlur={onEditCommit}
@@ -202,7 +202,7 @@ function FolderSidebar({
                 {!isEditing && (
                   <button
                     onClick={(e) => { e.stopPropagation(); onEditStart(f) }}
-                    className="mr-1 rounded p-0.5 text-slate-600 opacity-0 transition-opacity hover:bg-slate-700 hover:text-slate-300 group-hover:opacity-100"
+                    className="mr-1 rounded p-0.5 text-slate-400 opacity-0 transition-opacity hover:bg-slate-200 hover:text-slate-600 group-hover:opacity-100"
                     title="Rename folder"
                   >
                     <ChevronRight className="h-3 w-3" />
@@ -214,7 +214,7 @@ function FolderSidebar({
         </nav>
 
         {/* Footer */}
-        <div className="border-t border-slate-700 px-4 py-3">
+        <div className="border-t border-slate-200 px-4 py-3">
           <p className="text-[11px] text-slate-500">{folders.length} folders · {totalResources} files</p>
         </div>
       </aside>

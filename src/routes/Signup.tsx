@@ -120,7 +120,7 @@ export default function Signup() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-slate-900 px-4">
         <div className="w-full max-w-sm text-center">
-          <span className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl overflow-hidden">
+          <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl overflow-hidden">
             <img src="/branding/logo.png" alt="Cadenza Studio" className="h-full w-full object-contain" />
           </span>
           <h1 className="text-xl font-semibold text-white">Account Created</h1>
@@ -154,7 +154,7 @@ export default function Signup() {
       <div className="w-full max-w-sm">
         {/* Logo + heading */}
         <div className="mb-8 text-center">
-          <span className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl overflow-hidden">
+          <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl overflow-hidden">
             <img src="/branding/logo.png" alt="Cadenza Studio" className="h-full w-full object-contain" />
           </span>
           <h1 className={`text-xl font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>Create your account</h1>

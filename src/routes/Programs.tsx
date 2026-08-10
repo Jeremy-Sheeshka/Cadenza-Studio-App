@@ -143,7 +143,7 @@ export default function Programs() {
             ← Back to all programs
           </button>
 
-          <Card>
+          <Card className="p-4">
             <div className="flex items-start justify-between">
               <div>
                 <h2 className="text-xl font-semibold text-slate-900">{selectedProgram.name}</h2>
@@ -163,7 +163,7 @@ export default function Programs() {
           </Card>
 
           {/* Enrollments */}
-          <Card>
+          <Card className="p-4">
             <h3 className="text-sm font-semibold text-slate-800 mb-3">
               Enrollments ({enrollmentsFor(selectedProgram.id).length})
             </h3>

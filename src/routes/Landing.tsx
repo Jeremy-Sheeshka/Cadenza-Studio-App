@@ -103,7 +103,7 @@ export default function Landing() {
 
       <div className="w-full max-w-3xl text-center">
         {/* Logo */}
-        <div className="mx-auto mb-6 flex h-[72px] w-[72px] items-center justify-center rounded-2xl shadow-lg shadow-blue-500/20 overflow-hidden">
+        <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-2xl shadow-lg shadow-blue-500/20 overflow-hidden">
           <img src="/branding/logo.png" alt="Cadenza Studio" className="h-full w-full object-contain" />
         </div>
 

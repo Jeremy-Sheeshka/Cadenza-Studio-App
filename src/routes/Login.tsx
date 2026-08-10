@@ -102,7 +102,7 @@ export default function Login() {
       <div className="w-full max-w-sm">
         {/* Logo + heading */}
         <div className="mb-8 text-center">
-          <span className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl overflow-hidden">
+          <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl overflow-hidden">
             <img src="/branding/logo.png" alt="Cadenza Studio" className="h-full w-full object-contain" />
           </span>
           <h1 className={`text-xl font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>Welcome to Cadenza Studio</h1>

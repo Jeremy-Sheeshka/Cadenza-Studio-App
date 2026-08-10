@@ -198,7 +198,7 @@ function AccountTab() {
   return (
     <div className="max-w-2xl space-y-5">
       {/* Display name + reply-to email */}
-      <Card>
+      <Card className="p-4">
         <h3 className="mb-4 text-sm font-semibold text-slate-800">Profile</h3>
         <form onSubmit={saveAccount} className="space-y-4">
           <div>
@@ -216,7 +216,7 @@ function AccountTab() {
       </Card>
 
       {/* Email address */}
-      <Card>
+      <Card className="p-4">
         <h3 className="mb-1 text-sm font-semibold text-slate-800">Email address</h3>
         <p className="text-sm text-slate-500">{user?.email ?? '—'}</p>
         <p className="mt-1 text-xs text-slate-400">Read-only from your login provider</p>
@@ -226,7 +226,7 @@ function AccountTab() {
       </Card>
 
       {/* Password */}
-      <Card>
+      <Card className="p-4">
         <h3 className="mb-1 text-sm font-semibold text-slate-800">Password</h3>
         <p className="text-sm tracking-widest text-slate-500">••••••••</p>
         <Button onClick={() => { setNewPw(''); setConfirmPw(''); setPwError(''); setPwModal(true) }} className="mt-3 bg-slate-100 text-slate-700 hover:bg-slate-200">
@@ -235,7 +235,7 @@ function AccountTab() {
       </Card>
 
       {/* Phone number */}
-      <Card>
+      <Card className="p-4">
         <h3 className="mb-1 text-sm font-semibold text-slate-800">Phone number</h3>
         <p className="text-sm text-slate-500">Not set</p>
         <Button onClick={() => { setPhone(''); setPhoneModal(true) }} className="mt-3 bg-slate-100 text-slate-700 hover:bg-slate-200">
@@ -244,7 +244,7 @@ function AccountTab() {
       </Card>
 
       {/* Regional */}
-      <Card>
+      <Card className="p-4">
         <h3 className="mb-4 text-sm font-semibold text-slate-800">Regional</h3>
         <div className="grid gap-4 sm:grid-cols-3">
           <div>
@@ -378,7 +378,7 @@ function DirectoryTab() {
 
   return (
     <div className="max-w-2xl space-y-5">
-      <Card>
+      <Card className="p-4">
         <form onSubmit={saveDirectory} className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
@@ -585,7 +585,7 @@ function TeachingTab() {
   return (
     <div className="max-w-2xl space-y-6">
       {/* Categories */}
-      <Card>
+      <Card className="p-4">
         <h3 className="mb-3 text-sm font-semibold text-slate-800">Categories</h3>
         <form onSubmit={addCategory} className="mb-4 flex gap-2">
           <Input value={catName} onChange={(e) => setCatName(e.target.value)} placeholder="New category name" className="flex-1" />
@@ -618,7 +618,7 @@ function TeachingTab() {
       </Card>
 
       {/* Locations */}
-      <Card>
+      <Card className="p-4">
         <h3 className="mb-3 text-sm font-semibold text-slate-800">Locations</h3>
         <form onSubmit={addLocation} className="mb-4 flex gap-2">
           <Input value={locName} onChange={(e) => setLocName(e.target.value)} placeholder="New location name" className="flex-1" />
@@ -640,7 +640,7 @@ function TeachingTab() {
       </Card>
 
       {/* Student Tags */}
-      <Card>
+      <Card className="p-4">
         <h3 className="mb-3 text-sm font-semibold text-slate-800">Student Tags</h3>
         <form onSubmit={addTag} className="mb-4 flex gap-2">
           <Input value={tagName} onChange={(e) => setTagName(e.target.value)} placeholder="New tag name" className="flex-1" />
@@ -718,7 +718,7 @@ function SchedulingTab() {
   return (
     <div className="max-w-2xl space-y-5">
       {/* iCal Feed */}
-      <Card>
+      <Card className="p-4">
         <h3 className="mb-3 text-sm font-semibold text-slate-800">iCal Feed</h3>
         {token ? (
           <div className="space-y-3">
@@ -755,7 +755,7 @@ function SchedulingTab() {
       </Card>
 
       {/* Self-booking toggle */}
-      <Card>
+      <Card className="p-4">
         <h3 className="mb-3 text-sm font-semibold text-slate-800">Student Self-Booking</h3>
         <label className="flex items-center gap-3">
           <input
@@ -848,7 +848,7 @@ function PortalTab() {
 
   return (
     <div className="space-y-5">
-      <Card>
+      <Card className="p-4">
         <h3 className="mb-3 text-sm font-semibold text-slate-800">Family Portal Access</h3>
         <Input
           value={search}
@@ -1024,7 +1024,7 @@ function SubscriptionTab() {
       )}
 
       {/* Plan */}
-      <Card>
+      <Card className="p-4">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-sm font-semibold text-slate-800">Current plan</h3>
@@ -1067,7 +1067,7 @@ function SubscriptionTab() {
       </Card>
 
       {/* Data Export */}
-      <Card>
+      <Card className="p-4">
         <h3 className="mb-4 text-sm font-semibold text-slate-800">Data Export</h3>
         <div className="space-y-4">
           <div>

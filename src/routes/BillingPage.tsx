@@ -127,7 +127,7 @@ export default function BillingPage() {
       />
 
       {/* Outstanding card */}
-      <Card className="mb-6 flex items-center justify-between">
+      <Card className="mb-6 flex items-center justify-between p-5">
         <div>
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Outstanding Balance</p>
           <p className="mt-1 text-2xl font-semibold text-slate-900">{fmt(outstanding)}</p>
@@ -187,7 +187,7 @@ export default function BillingPage() {
 function InvoicesTab({ invoices, onDetail }: { invoices: Invoice[]; onDetail: (inv: Invoice) => void }) {
   if (invoices.length === 0) {
     return (
-      <Card>
+      <Card className="p-5">
         <p className="py-8 text-center text-sm text-slate-400">No invoices yet.</p>
       </Card>
     )
@@ -195,7 +195,7 @@ function InvoicesTab({ invoices, onDetail }: { invoices: Invoice[]; onDetail: (i
 
   return (
     <Card className="p-0">
-      <div className="overflow-x-auto -mx-4 sm:mx-0"><table className="w-full text-left text-xs sm:text-sm">
+      <div className="overflow-x-auto"><table className="w-full text-left text-xs sm:text-sm">
         <thead className="border-b border-slate-200 bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500">
           <tr>
             <th className="px-5 py-3">Invoice #</th>
@@ -282,7 +282,7 @@ function InvoiceDetailModal({
         {items.length > 0 && (
           <div className="mb-5">
             <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">Line Items</h3>
-            <div className="overflow-x-auto -mx-4 sm:mx-0"><table className="w-full text-left text-xs sm:text-sm">
+            <div className="overflow-x-auto"><table className="w-full text-left text-xs sm:text-sm">
               <thead className="border-b border-slate-200 text-xs text-slate-400">
                 <tr>
                   <th className="py-2 font-medium">Description</th>
@@ -317,7 +317,7 @@ function InvoiceDetailModal({
         {payments.length > 0 && (
           <div className="mb-5">
             <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">Payments Applied</h3>
-            <div className="overflow-x-auto -mx-4 sm:mx-0"><table className="w-full text-left text-xs sm:text-sm">
+            <div className="overflow-x-auto"><table className="w-full text-left text-xs sm:text-sm">
               <thead className="border-b border-slate-200 text-xs text-slate-400">
                 <tr>
                   <th className="py-2 font-medium">Date</th>
@@ -377,7 +377,7 @@ function PaymentsTab({ payments }: { payments: Payment[] }) {
 
   return (
     <Card className="p-0">
-      <div className="overflow-x-auto -mx-4 sm:mx-0"><table className="w-full text-left text-xs sm:text-sm">
+      <div className="overflow-x-auto"><table className="w-full text-left text-xs sm:text-sm">
         <thead className="border-b border-slate-200 bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500">
           <tr>
             <th className="px-5 py-3">Date</th>
@@ -421,7 +421,7 @@ function TemplatesTab({ templates }: { templates: RecurringInvoiceTemplate[] }) 
 
   return (
     <Card className="p-0">
-      <div className="overflow-x-auto -mx-4 sm:mx-0"><table className="w-full text-left text-xs sm:text-sm">
+      <div className="overflow-x-auto"><table className="w-full text-left text-xs sm:text-sm">
         <thead className="border-b border-slate-200 bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500">
           <tr>
             <th className="px-5 py-3">Title</th>
@@ -469,7 +469,7 @@ function PassesTab({ passes }: { passes: SessionPass[] }) {
 
   return (
     <Card className="p-0">
-      <div className="overflow-x-auto -mx-4 sm:mx-0"><table className="w-full text-left text-xs sm:text-sm">
+      <div className="overflow-x-auto"><table className="w-full text-left text-xs sm:text-sm">
         <thead className="border-b border-slate-200 bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500">
           <tr>
             <th className="px-5 py-3">Student</th>

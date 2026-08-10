@@ -211,7 +211,7 @@ export default function LessonNotes() {
         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((n) => (
             <button key={n.id} onClick={() => openView(n)} className="text-left">
-              <Card className="transition-shadow hover:shadow-md h-full">
+              <Card className="transition-shadow hover:shadow-md h-full p-4">
                 <div className="flex items-start justify-between gap-2">
                   <p className="font-medium text-slate-900 text-sm line-clamp-1">{n.title || 'Untitled'}</p>
                   <Badge variant={STATUS_BADGE[n.status] ?? 'slate'}>{n.status}</Badge>
@@ -232,7 +232,7 @@ export default function LessonNotes() {
         {templates.length === 0
           ? <EmptyState title="No templates yet" description="Save a note as a template to reuse it later" />
           : <div className="grid gap-3 md:grid-cols-2">{templates.map((t) => (
-              <Card key={t.id}>
+              <Card key={t.id} className="p-4">
                 <p className="font-medium text-slate-900 text-sm">{t.title}</p>
                 <p className="mt-1 text-xs text-slate-400">{extractText(t.body)}</p>
               </Card>

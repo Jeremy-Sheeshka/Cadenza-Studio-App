@@ -75,14 +75,14 @@ export default function Forms() {
       {loading ? (
         <p className="text-sm text-slate-400">Loading…</p>
       ) : forms.length === 0 ? (
-        <Card className="text-center py-8">
+        <Card className="text-center py-8 px-4">
           <p className="text-sm text-slate-500">No forms yet</p>
           <p className="text-xs text-slate-400 mt-1">Create forms to collect information from families and students.</p>
         </Card>
       ) : (
         <div className="space-y-3">
           {forms.map((f) => (
-            <Card key={f.id} className="flex items-center justify-between">
+            <Card key={f.id} className="flex items-center justify-between p-4">
               <div>
                 <p className="text-sm font-medium text-slate-900">{f.title}</p>
                 <p className="text-xs text-slate-400">
@@ -93,7 +93,7 @@ export default function Forms() {
                 <Badge variant={f.is_active ? 'green' : 'slate'}>{f.is_active ? 'Active' : 'Inactive'}</Badge>
                 <button
                   onClick={() => setViewSubmissions(f.id)}
-                  className="text-xs text-blue-700 hover:text-blue-800 font-medium"
+                  className="text-xs font-medium px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors"
                 >
                   View Submissions
                 </button>
@@ -120,7 +120,7 @@ export default function Forms() {
               <p className="text-sm text-slate-400">No submissions yet.</p>
             ) : (
               submissions.filter((s) => s.form_id === viewSubmissions).map((sub) => (
-                <Card key={sub.id} className="text-sm">
+                <Card key={sub.id} className="text-sm p-4">
                   <p className="text-xs text-slate-400 mb-1">{new Date(sub.submitted_at).toLocaleDateString()}</p>
                   <pre className="text-xs text-slate-700 whitespace-pre-wrap font-mono bg-slate-50 p-2 rounded">
                     {JSON.stringify(sub.data, null, 2)}
