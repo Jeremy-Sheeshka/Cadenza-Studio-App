@@ -44,14 +44,12 @@ app.use('/api/messages', messageRoutes)
 
 app.get('/api/health', (_req, res) => res.json({ status: 'ok' }))
 
-// Serve React frontend in production
-if (isProd) {
-  const distPath = path.join(__dirname, '..', 'dist')
-  app.use(express.static(distPath))
-  app.get('*', (_req, res) => {
-    res.sendFile(path.join(distPath, 'index.html'))
-  })
-}
+// Serve React frontend (if dist/ exists, serve it)
+const distPath = path.join(__dirname, '..', 'dist')
+app.use(express.static(distPath))
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'))
+})
 
 app.listen(PORT, () => console.log(`Cadenza Studio server running on http://localhost:${PORT}`))
 
