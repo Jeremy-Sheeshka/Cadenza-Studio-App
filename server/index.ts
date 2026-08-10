@@ -3,6 +3,7 @@ import cors from 'cors'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { runMigrations } from './db.js'
+import { seed } from './seed.js'
 import authRoutes from './routes/authRoutes.js'
 import studentRoutes from './routes/studentRoutes.js'
 import eventRoutes from './routes/eventRoutes.js'
@@ -18,18 +19,19 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const app = express()
-const PORT = parseInt(process.env.PORT || '3001')
+const PORT = process.env.PORT || 3001
 
-// In production, allow the deployed domain; in dev, allow localhost
-const isProd = process.env.NODE_ENV === 'production'
-app.use(cors({
-  origin: isProd
-    ? [process.env.RAILWAY_PUBLIC_DOMAIN || '*']
-    : ['http://localhost:5173', 'http://localhost:5199', 'http://localhost:3000']
-}))
+app.use(cors({ origin: '*' }))
 app.use(express.json())
 
 runMigrations()
+
+// Only seed if RUN_SEED=true (prevents re-seeding on every restart)
+if (process.env.RUN_SEED === 'true') {
+  seed().catch(err => {
+    console.error('Seed error:', err)
+  })
+}
 
 app.use('/api/auth', authRoutes)
 app.use('/api/students', studentRoutes)
@@ -47,10 +49,10 @@ app.get('/api/health', (_req, res) => res.json({ status: 'ok' }))
 // Serve React frontend (if dist/ exists, serve it)
 const distPath = path.join(__dirname, '..', 'dist')
 app.use(express.static(distPath))
-app.get('*', (_req, res) => {
+app.get('/{*splat}', (_req, res) => {
   res.sendFile(path.join(distPath, 'index.html'))
 })
 
-app.listen(PORT, () => console.log(`Cadenza Studio server running on http://localhost:${PORT}`))
+app.listen(PORT, '0.0.0.0', () => console.log(`Cadenza Studio server running on port ${PORT}`))
 
 export default app

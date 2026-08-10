@@ -1,4 +1,4 @@
-FROM node:22
+FROM node:22-slim
 
 WORKDIR /app
 
@@ -17,14 +17,8 @@ COPY . .
 # Build the React frontend
 RUN npm run build
 
-# Set production environment
-ENV NODE_ENV=production
-
 # Expose port
 EXPOSE 3001
 
-# Create startup script
-RUN printf '#!/bin/sh\ncd /app\n./node_modules/.bin/tsx server/seed.ts\n./node_modules/.bin/tsx server/index.ts\n' > /app/start.sh && chmod +x /app/start.sh
-
-# Start the server
-CMD ["/app/start.sh"]
+# Seed on first deploy, then start server
+CMD ["sh", "-c", "RUN_SEED=true ./node_modules/.bin/tsx server/index.ts"]

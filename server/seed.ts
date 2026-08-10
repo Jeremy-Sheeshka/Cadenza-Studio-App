@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 import db, { runMigrations } from './db.js'
 import { hashPassword } from './auth.js'
 
-async function seed() {
+export async function seed() {
   runMigrations()
 
   console.log('Seeding database...')
@@ -116,7 +116,10 @@ async function seed() {
   console.log('  Demo student account created with sample lessons + practice logs')
 }
 
-seed().catch(err => {
-  console.error('Seed error:', err)
-  process.exit(1)
-})
+// When run directly (not imported), execute the seed
+if (process.argv[1]?.includes('seed')) {
+  seed().catch(err => {
+    console.error('Seed error:', err)
+    process.exit(1)
+  })
+}
