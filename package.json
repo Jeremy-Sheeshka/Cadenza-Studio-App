@@ -1,0 +1,33 @@
+{
+  "name": "cadenza-studio",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "server": "node ./server/node_modules/.bin/tsx server/index.ts",
+    "seed": "node ./server/node_modules/.bin/tsx server/seed.ts",
+    "dev:full": "./server/node_modules/.bin/concurrently -n server,app -c blue,green \"npm run server\" \"npm run dev\""
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.4",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.469.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.1.5",
+    "tailwind-merge": "^3.6.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.6",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.6.0",
+    "tailwindcss": "^4.0.6",
+    "typescript": "~5.7.2",
+    "vite": "^6.2.0"
+  }
+}

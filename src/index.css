@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ── Base theme (light) ─────────────────────────────────── */
+:root {
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-border: #e2e8f0;
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+  --color-accent: #2563eb;
+  --color-accent-hover: #1d4ed8;
+  --color-sidebar: #ffffff;
+  --color-card: #ffffff;
+  --gradient-accent: linear-gradient(135deg, #2563eb, #4f46e5);
+}
+
+/* ── Dark theme ────────────────────────────────────────── */
+.dark {
+  --color-bg: #0f172a;
+  --color-surface: #1e293b;
+  --color-border: #334155;
+  --color-text: #f1f5f9;
+  --color-text-muted: #94a3b8;
+  --color-accent: #3b82f6;
+  --color-accent-hover: #60a5fa;
+  --color-sidebar: #1e293b;
+  --color-card: #1e293b;
+  --gradient-accent: linear-gradient(135deg, #3b82f6, #6366f1);
+}
+
+/* ── Base reset ────────────────────────────────────────── */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition: background 0.3s, color 0.3s;
+}
+
+/* ── Dark mode overrides for Tailwind transparent classes ── */
+.dark .bg-white { background-color: var(--color-surface); }
+.dark .bg-slate-50 { background-color: #1e293b; }
+.dark .bg-slate-100 { background-color: #1e293b; }
+.dark .border-slate-100 { border-color: #334155; }
+.dark .border-slate-200 { border-color: #334155; }
+.dark .text-slate-900 { color: #f1f5f9; }
+.dark .text-slate-800 { color: #e2e8f0; }
+.dark .text-slate-700 { color: #cbd5e1; }
+.dark .text-slate-600 { color: #94a3b8; }
+.dark .text-slate-500 { color: #64748b; }
+.dark .text-slate-400 { color: #64748b; }
+.dark .divide-slate-100 { border-color: #334155; }
+.dark .shadow-sm { box-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+.dark .hover\:bg-slate-50:hover { background-color: #334155; }
+.dark .hover\:bg-slate-100:hover { background-color: #334155; }
+.dark .bg-slate-50\/50 { background-color: rgba(30,41,59,0.5); }
+.dark .bg-slate-50\/60 { background-color: rgba(30,41,59,0.6); }
+.dark .border-slate-700\/50 { border-color: rgba(51,65,85,0.5); }
+.dark .bg-slate-800\/50 { background-color: rgba(30,41,59,0.5); }
+.dark .bg-slate-800\/80 { background-color: rgba(30,41,59,0.8); }
+.dark .bg-slate-900\/50 { background-color: rgba(15,23,42,0.5); }
+.dark .bg-slate-900\/60 { background-color: rgba(15,23,42,0.6); }
+.dark .from-slate-900 { --tw-gradient-from: #0f172a; }
+.dark .via-slate-800 { --tw-gradient-via: #1e293b; }
+.dark .to-slate-900 { --tw-gradient-to: #0f172a; }
+.dark .from-slate-50 { --tw-gradient-from: #1e293b; }
+.dark .via-white { --tw-gradient-via: #1e293b; }
+.dark .to-slate-100 { --tw-gradient-to: #1e293b; }
+
+/* ── Light mode overrides for dark-themed elements ──────── */
+/* Only fix BACKGROUNDS that are hardcoded dark. Leave text colors alone — */
+/* Tailwind's default text colors already work on light backgrounds. */
+
+/* Dark backgrounds → light in light mode */
+.light .bg-slate-900 { background-color: #f8fafc; }
+.light .bg-slate-800 { background-color: #ffffff; }
+.light .bg-slate-800\/50 { background-color: #ffffff; }
+.light .bg-slate-800\/80 { background-color: #f1f5f9; }
+.light .bg-slate-800\/60 { background-color: #f8fafc; }
+.light .bg-slate-900\/50 { background-color: #f1f5f9; }
+.light .bg-slate-900\/60 { background-color: #e2e8f0; }
+
+/* Dark borders → lighter in light mode */
+.light .border-slate-600 { border-color: #cbd5e1; }
+.light .border-slate-700\/50 { border-color: #e2e8f0; }
+
+/* Inputs on dark backgrounds */
+.light input.bg-slate-900\/50,
+.light input.bg-slate-800\/50 { 
+  background-color: #ffffff; 
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+.light input.bg-slate-900\/50::placeholder,
+.light input.bg-slate-800\/50::placeholder { color: #94a3b8; }
+
+/* Student portal cards — dark → white, text → dark */
+.light .\!bg-slate-800\/50,
+.light .\!bg-slate-800\/60,
+.light [class*="bg-slate-800"] {
+  background-color: #ffffff !important;
+}
+.light .\!border-slate-700\/50,
+.light .\!border-slate-700\/40,
+.light [class*="border-slate-700"] {
+  border-color: #e2e8f0 !important;
+}
+
+/* Student portal card text → dark in light mode */
+.light .\!bg-slate-800\/50 .text-white,
+.light .\!bg-slate-800\/60 .text-white,
+.light .bg-slate-800\/50 .text-white { color: #0f172a; }
+.light .\!bg-slate-800\/50 h1,
+.light .\!bg-slate-800\/50 h2,
+.light .\!bg-slate-800\/50 h3,
+.light .bg-slate-800\/50 h3 { color: #0f172a; }
+
+.light .bg-slate-800\/50.backdrop-blur-xl { background-color: rgba(255,255,255,0.85); }
+.light select.bg-slate-800\/50 { background-color: #ffffff; color: #0f172a; border-color: #cbd5e1; }
+
+/* ── Text legibility fixes for light mode ────────────────── */
+/* tailwind text-slate-300/400 are too light on white backgrounds */
+.light .text-slate-300 { color: #475569; }  /* slate-600 */
+.light .text-slate-400 { color: #475569; }  /* slate-600 */
