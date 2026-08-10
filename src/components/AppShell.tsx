@@ -34,7 +34,9 @@ function SidebarContent({ onClick, collapsed }: { onClick?: () => void; collapse
   if (collapsed) {
     return (
       <div className="flex flex-col items-center py-4 gap-4">
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 text-sm font-bold text-white shrink-0">N</span>
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg overflow-hidden shrink-0">
+          <img src="/branding/logo.png" alt="Cadenza Studio" className="h-full w-full object-contain" />
+        </span>
         <nav className="flex-1 space-y-1 w-full px-2">
           {NAV.map(({ to, icon: Icon }) => (
             <NavLink
