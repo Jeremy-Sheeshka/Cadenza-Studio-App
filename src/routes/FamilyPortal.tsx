@@ -118,8 +118,8 @@ export function FamilyLogin() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-2xl font-bold text-white shadow-lg">
-            N
+          <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 shadow-lg">
+            <img src="/branding/logo.png" alt="Cadenza Studio" className="h-10 w-10 object-contain" />
           </span>
           <h1 className="text-3xl font-bold text-slate-800">Cadenza Family</h1>
           <p className="mt-2 text-slate-500">Stay connected with your student's progress</p>
@@ -251,8 +251,8 @@ export function FamilyPortal() {
       <header className="sticky top-0 z-20 bg-white border-b border-slate-200 shadow-sm">
         <div className="mx-auto max-w-5xl px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 text-sm font-bold text-white shadow-sm">
-              N
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 shadow-sm">
+              <img src="/branding/logo.png" alt="Cadenza Studio" className="h-6 w-6 object-contain" />
             </span>
             <div>
               <p className="text-sm font-semibold text-slate-800">Cadenza Family</p>

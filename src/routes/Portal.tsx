@@ -111,7 +111,7 @@ export function StudentLogin() {
         {/* Logo + heading */}
         <div className="mb-8 text-center">
           <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-2xl font-bold text-white">
-            N
+            <img src="/branding/logo.png" alt="Cadenza Studio" className="h-10 w-10 object-contain" />
           </span>
           <h1 className="text-3xl font-bold text-white">Family Portal</h1>
           <p className="mt-2 text-slate-400">Access your lessons and resources</p>
@@ -320,8 +320,8 @@ export function StudentPortal() {
       }`}>
         <div className="mx-auto max-w-5xl px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 text-sm font-bold text-white">
-              N
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600">
+              <img src="/branding/logo.png" alt="Cadenza Studio" className="h-6 w-6 object-contain" />
             </span>
             <div>
               <p className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-800'}`}>Cadenza</p>

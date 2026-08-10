@@ -68,8 +68,8 @@ function SidebarContent({ onClick, collapsed }: { onClick?: () => void; collapse
   return (
     <>
       <div className="flex h-16 items-center gap-2 border-b border-slate-100 dark:border-slate-700 px-5">
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 text-sm font-bold text-white">
-          N
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600">
+          <img src="/branding/logo.png" alt="Cadenza Studio" className="h-5 w-5 object-contain" />
         </span>
         <span className="text-sm font-semibold dark:text-white">Cadenza Studio</span>
       </div>
