@@ -17,5 +17,5 @@ RUN npm run build
 # Expose port
 EXPOSE 3001
 
-# Start the Express server and seed the database
-CMD ["sh", "-c", "node --import tsx server/seed.ts && node --import tsx server/index.ts"]
+# Seed the database and start the server
+CMD ["sh", "-c", "npx tsx server/seed.ts && npx tsx server/index.ts"]
