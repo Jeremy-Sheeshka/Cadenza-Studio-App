@@ -17,5 +17,5 @@ RUN npm run build
 # Expose port
 EXPOSE 3001
 
-# Seed the database and start the server
-CMD ["sh", "-c", "npx tsx server/seed.ts && npx tsx server/index.ts"]
+# Seed the database and start the server using local tsx binary
+CMD ["sh", "-c", "./node_modules/.bin/tsx server/seed.ts && ./node_modules/.bin/tsx server/index.ts"]
