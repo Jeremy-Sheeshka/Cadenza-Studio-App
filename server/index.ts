@@ -21,7 +21,14 @@ const __dirname = path.dirname(__filename)
 const app = express()
 const PORT = process.env.PORT || 3001
 
-app.use(cors({ origin: '*' }))
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://cadenza-studio-app-production.up.railway.app',
+  ],
+  credentials: true,
+}))
 app.use(express.json())
 
 runMigrations()

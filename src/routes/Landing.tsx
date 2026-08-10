@@ -54,7 +54,8 @@ export default function Landing() {
   async function demoLogin(role: string, email: string, password: string) {
     setDemoBusy(role)
     try {
-      const res = await fetch('http://localhost:3001/api/auth/login', {
+      const apiBase = import.meta.env.PROD ? '/api' : 'http://localhost:3001/api'
+      const res = await fetch(`${apiBase}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),

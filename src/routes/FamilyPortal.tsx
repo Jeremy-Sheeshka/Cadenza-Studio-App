@@ -15,7 +15,7 @@ import {
 
 // ── local fetch helpers (extends baseApi for family-portal routes) ──────────
 
-const BASE = 'http://localhost:3001/api'
+const BASE = import.meta.env.PROD ? '/api' : 'http://localhost:3001/api'
 
 async function safeGet<T>(path: string): Promise<T | null> {
   try {
