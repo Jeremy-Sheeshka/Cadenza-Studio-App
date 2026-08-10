@@ -332,7 +332,7 @@ export function StudentPortal() {
           <div className="flex items-center gap-3">
             {students.length > 1 && (
               <select
-                className="h-9 rounded-lg border border-slate-600 bg-slate-800/50 px-3 text-sm text-white outline-none focus:border-blue-500"
+                className={`h-9 rounded-lg border px-3 text-sm outline-none focus:border-blue-500 ${isDark ? 'bg-slate-800/50 border-slate-600 text-white' : 'bg-white border-slate-300 text-slate-800'}`}
                 value={selId ?? ''}
                 onChange={(e) => setSelectedStudentId(e.target.value)}
               >
@@ -348,7 +348,7 @@ export function StudentPortal() {
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-medium transition-all ${
                 gamified
                   ? 'bg-gradient-to-r from-amber-400 to-orange-500 text-white shadow-sm shadow-amber-500/30'
-                  : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                  : `${isDark ? 'bg-slate-700 text-slate-300 hover:bg-slate-600' : 'bg-slate-200 text-slate-600 hover:bg-slate-300'}`
               }`}
             >
               {gamified ? <Zap className="h-3 w-3" /> : <BookOpen className="h-3 w-3" />}
@@ -356,13 +356,13 @@ export function StudentPortal() {
             </button>
 
             {/* Theme toggle */}
-            <button onClick={toggle} className="flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-medium bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors">
+            <button onClick={toggle} className={`flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-medium transition-colors ${isDark ? 'bg-slate-700 text-slate-300 hover:bg-slate-600' : 'bg-slate-200 text-slate-600 hover:bg-slate-300'}`}>
               {isDark ? '☀️' : '🌙'}
             </button>
 
             <button
               onClick={signOut}
-              className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors"
+              className={`flex items-center gap-1.5 text-xs transition-colors ${isDark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-700'}`}
             >
               <LogOut className="h-4 w-4" />
               Sign out
@@ -383,7 +383,7 @@ export function StudentPortal() {
                   className={`flex shrink-0 items-center gap-1.5 px-3 py-3 text-xs font-medium border-b-2 transition-colors whitespace-nowrap ${
                     active
                       ? 'border-blue-500 text-blue-400'
-                      : 'border-transparent text-slate-500 hover:text-slate-300'
+                      : `border-transparent transition-colors ${isDark ? 'text-slate-500 hover:text-slate-300' : 'text-slate-500 hover:text-slate-700'}`
                   }`}
                 >
                   <Icon className="h-4 w-4" />
@@ -420,6 +420,7 @@ function HomeTab({ studentIds, selId, students, selectedStudent, family, gamifie
   family: Family
   gamified: boolean
 }) {
+  const { isDark } = useTheme()
   const [summaries, setSummaries] = useState<WeeklyPracticeSummary[]>([])
   const [notes, setNotes] = useState<LessonNote[]>([])
   const [events, setEvents] = useState<CalendarEvent[]>([])
@@ -509,19 +510,19 @@ function HomeTab({ studentIds, selId, students, selectedStudent, family, gamifie
   const hasStreak = (selectedStudent?.practice_streak ?? 0) >= 7
   const hasRecital = (selectedStudent?.level ?? 0) >= 10
 
-  // Card classes based on mode
+  // Card classes based on mode and theme
   const cardBg = gamified
-    ? '!bg-slate-800/60 !border-slate-700/40 backdrop-blur-sm'
-    : '!bg-slate-800/50 !border-slate-700/50'
+    ? (isDark ? '!bg-slate-800/60 !border-slate-700/40 backdrop-blur-sm' : '!bg-white !border-slate-200')
+    : (isDark ? '!bg-slate-800/50 !border-slate-700/50' : '!bg-white !border-slate-200')
 
   return (
     <div className={`space-y-6 ${gamified ? 'gamified' : ''}`}>
       {/* Welcome */}
       <div>
-        <h1 className={`text-2xl font-bold ${gamified ? 'bg-gradient-to-r from-amber-400 via-orange-400 to-pink-400 bg-clip-text text-transparent' : 'text-white'}`}>
+        <h1 className={`text-2xl font-bold ${gamified ? 'bg-gradient-to-r from-amber-400 via-orange-400 to-pink-400 bg-clip-text text-transparent' : (isDark ? 'text-white' : 'text-slate-800')}`}>
           {gamified ? '🎵 ' : ''}Welcome back{selectedStudent ? `, ${selectedStudent.first_name}` : ''}{gamified ? '! 🎵' : ''}
         </h1>
-        <p className="text-slate-400 text-sm mt-1">{family.name}</p>
+        <p className={`text-sm mt-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{family.name}</p>
       </div>
 
       {/* ── Gamified: Level + XP bar ─────────────────────────────────────── */}
@@ -533,8 +534,8 @@ function HomeTab({ studentIds, selId, students, selectedStudent, family, gamifie
                 {level}
               </div>
               <div>
-                <p className="text-sm font-semibold text-white">Level {level}</p>
-                <p className="text-xs text-slate-400">{totalXP} XP · {xpForNext - totalXP} XP to next level</p>
+                <p className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-800'}`}>Level {level}</p>
+                <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{totalXP} XP · {xpForNext - totalXP} XP to next level</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -543,7 +544,7 @@ function HomeTab({ studentIds, selId, students, selectedStudent, family, gamifie
             </div>
           </div>
           {/* XP progress bar */}
-          <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+          <div className={`h-2 rounded-full overflow-hidden ${isDark ? 'bg-slate-700' : 'bg-slate-200'}`}>
             <div
               className="h-full bg-gradient-to-r from-amber-400 to-orange-500 rounded-full transition-all duration-700"
               style={{ width: `${xpProgress}%` }}
@@ -583,12 +584,12 @@ function HomeTab({ studentIds, selId, students, selectedStudent, family, gamifie
         <Card className={`${cardBg} p-4`}>
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500/10">
+              <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${isDark ? 'bg-indigo-500/10' : 'bg-indigo-50'}`}>
                 <CheckCircle className="h-5 w-5 text-indigo-400" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-white">Today's Lesson</p>
-                <p className="text-xs text-slate-400">
+                <p className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-800'}`}>Today's Lesson</p>
+                <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                   {todayEvent.title ?? 'Lesson'} · {new Date(todayEvent.start_time).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}
                 </p>
               </div>
@@ -605,12 +606,12 @@ function HomeTab({ studentIds, selId, students, selectedStudent, family, gamifie
       ) : checkedInEventId ? (
         <Card className={`${cardBg} p-4 border-indigo-500/30`}>
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500/20">
+            <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${isDark ? 'bg-indigo-500/20' : 'bg-indigo-50'}`}>
               <Sparkles className="h-5 w-5 text-indigo-400" />
             </div>
             <div>
               <p className="text-sm font-semibold text-indigo-400">Lesson in progress…</p>
-              <p className="text-xs text-slate-400">
+              <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                 Checked in at {checkinTime ? new Date(checkinTime).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' }) : ''}
                 {' · '}
                 {Math.floor(elapsed / 60)}m {elapsed % 60}s elapsed
@@ -626,7 +627,7 @@ function HomeTab({ studentIds, selId, students, selectedStudent, family, gamifie
           <div className="flex items-center gap-3">
             <CalendarDays className="h-5 w-5 text-blue-400" />
             <div>
-              <p className="text-sm font-medium text-white">Today: {todayEvent.title ?? 'Lesson'} at {new Date(todayEvent.start_time).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}</p>
+              <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>Today: {todayEvent.title ?? 'Lesson'} at {new Date(todayEvent.start_time).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}</p>
             </div>
           </div>
         </Card>
@@ -636,48 +637,48 @@ function HomeTab({ studentIds, selId, students, selectedStudent, family, gamifie
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card className={`${cardBg} p-4 ${gamified ? 'hover:shadow-amber-500/10 transition-shadow' : ''}`}>
           <div className="flex items-center gap-3">
-            <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${gamified ? 'bg-amber-500/20' : 'bg-amber-500/10'}`}>
+            <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${gamified ? 'bg-amber-500/20' : (isDark ? 'bg-amber-500/10' : 'bg-amber-50')}`}>
               <Trophy className={`h-5 w-5 ${gamified ? 'text-amber-300' : 'text-amber-400'}`} />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">{totalDays}</p>
-              <p className="text-xs text-slate-400">Day Streak</p>
+              <p className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>{totalDays}</p>
+              <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Day Streak</p>
             </div>
           </div>
         </Card>
 
         <Card className={`${cardBg} p-4 ${gamified ? 'hover:shadow-blue-500/10 transition-shadow' : ''}`}>
           <div className="flex items-center gap-3">
-            <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${gamified ? 'bg-blue-500/20' : 'bg-blue-500/10'}`}>
+            <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${gamified ? 'bg-blue-500/20' : (isDark ? 'bg-blue-500/10' : 'bg-blue-50')}`}>
               <TrendingUp className={`h-5 w-5 ${gamified ? 'text-blue-300' : 'text-blue-400'}`} />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">{totalMinutes}</p>
-              <p className="text-xs text-slate-400">Min This Week</p>
+              <p className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>{totalMinutes}</p>
+              <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Min This Week</p>
             </div>
           </div>
         </Card>
 
         <Card className={`${cardBg} p-4 ${gamified ? 'hover:shadow-blue-500/10 transition-shadow' : ''}`}>
           <div className="flex items-center gap-3">
-            <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${gamified ? 'bg-blue-500/20' : 'bg-blue-500/10'}`}>
+            <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${gamified ? 'bg-blue-500/20' : (isDark ? 'bg-blue-500/10' : 'bg-blue-50')}`}>
               <Music className={`h-5 w-5 ${gamified ? 'text-blue-300' : 'text-blue-400'}`} />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">{events.length}</p>
-              <p className="text-xs text-slate-400">Upcoming Lessons</p>
+              <p className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>{events.length}</p>
+              <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Upcoming Lessons</p>
             </div>
           </div>
         </Card>
 
         <Card className={`${cardBg} p-4 ${gamified ? 'hover:shadow-indigo-500/10 transition-shadow' : ''}`}>
           <div className="flex items-center gap-3">
-            <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${gamified ? 'bg-indigo-500/20' : 'bg-indigo-500/10'}`}>
+            <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${gamified ? 'bg-indigo-500/20' : (isDark ? 'bg-indigo-500/10' : 'bg-indigo-50')}`}>
               <Bell className={`h-5 w-5 ${gamified ? 'text-emerald-300' : 'text-indigo-400'}`} />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">{goalMet ? 'Yes! 🎉' : 'Soon'}</p>
-              <p className="text-xs text-slate-400">Goal Met</p>
+              <p className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>{goalMet ? 'Yes! 🎉' : 'Soon'}</p>
+              <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Goal Met</p>
             </div>
           </div>
         </Card>
@@ -688,17 +689,17 @@ function HomeTab({ studentIds, selId, students, selectedStudent, family, gamifie
         {/* Practice */}
         <Card className={`${cardBg} p-5`}>
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-semibold text-white">Practice This Week</h3>
+            <h3 className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-800'}`}>Practice This Week</h3>
             <TrendingUp className={`h-4 w-4 ${gamified ? 'text-amber-400' : 'text-blue-400'}`} />
           </div>
 
           {/* Progress bar */}
           <div className="mb-4">
-            <div className="flex justify-between text-xs text-slate-400 mb-1">
+            <div className={`flex justify-between text-xs mb-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
               <span>{totalMinutes} min</span>
               <span>Goal: 60 min</span>
             </div>
-            <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+            <div className={`h-2 rounded-full overflow-hidden ${isDark ? 'bg-slate-700' : 'bg-slate-200'}`}>
               <div
                 className={`h-full rounded-full transition-all ${gamified ? 'bg-gradient-to-r from-amber-400 to-orange-500' : 'bg-gradient-to-r from-blue-500 to-indigo-500'}`}
                 style={{ width: `${Math.min(100, (totalMinutes / 60) * 100)}%` }}
@@ -707,7 +708,7 @@ function HomeTab({ studentIds, selId, students, selectedStudent, family, gamifie
           </div>
 
           {filteredSummaries.length === 0 ? (
-            <p className="text-sm text-slate-500">No practice data yet this week.</p>
+            <p className={`text-sm ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>No practice data yet this week.</p>
           ) : (
             <div className="space-y-3">
               {filteredSummaries.map((s) => {
@@ -715,10 +716,10 @@ function HomeTab({ studentIds, selId, students, selectedStudent, family, gamifie
                 return (
                   <div key={s.student_id} className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-white">
+                      <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>
                         {st ? `${st.first_name} ${st.last_name}` : `Student ${s.student_id.slice(-4)}`}
                       </p>
-                      <p className="text-xs text-slate-400">{s.total_minutes} min · {s.days_practiced} days</p>
+                      <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{s.total_minutes} min · {s.days_practiced} days</p>
                     </div>
                     <div className="flex items-center gap-2">
                       {gamified && s.goal_met && <Flame className="h-4 w-4 text-orange-400" />}
@@ -736,11 +737,11 @@ function HomeTab({ studentIds, selId, students, selectedStudent, family, gamifie
         {/* Upcoming lessons */}
         <Card className={`${cardBg} p-5`}>
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-semibold text-white">Upcoming Lessons</h3>
+            <h3 className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-800'}`}>Upcoming Lessons</h3>
             <CalendarDays className={`h-4 w-4 ${gamified ? 'text-amber-400' : 'text-blue-400'}`} />
           </div>
           {events.length === 0 ? (
-            <p className="text-sm text-slate-500">No upcoming lessons.</p>
+            <p className={`text-sm ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>No upcoming lessons.</p>
           ) : (
             <div className="space-y-3">
               {events.slice(0, 3).map((ev) => {
@@ -748,19 +749,19 @@ function HomeTab({ studentIds, selId, students, selectedStudent, family, gamifie
                 return (
                   <div key={ev.id} className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <Clock className="h-4 w-4 text-slate-400" />
+                      <Clock className={`h-4 w-4 ${isDark ? 'text-slate-400' : 'text-slate-500'}`} />
                       <div>
-                        <p className="text-sm font-medium text-white">
+                        <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>
                           {ev.title ?? (ev.is_group ? ev.group_name ?? 'Group Lesson' : 'Lesson')}
                         </p>
-                        <p className="text-xs text-slate-400">
+                        <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                           {DAYS[start.getDay()]} {start.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                           {' · '}
                           {start.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}
                         </p>
                       </div>
                     </div>
-                    <ChevronRight className="h-4 w-4 text-slate-600" />
+                    <ChevronRight className={`h-4 w-4 ${isDark ? 'text-slate-600' : 'text-slate-400'}`} />
                   </div>
                 )
               })}
@@ -772,26 +773,26 @@ function HomeTab({ studentIds, selId, students, selectedStudent, family, gamifie
       {/* Recent notes */}
       <Card className={`${cardBg} p-5`}>
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-semibold text-white">Recent Notes</h3>
+          <h3 className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-800'}`}>Recent Notes</h3>
           <FileText className={`h-4 w-4 ${gamified ? 'text-amber-400' : 'text-blue-400'}`} />
         </div>
         {notes.length === 0 ? (
-          <p className="text-sm text-slate-500">No lesson notes yet.</p>
+          <p className={`text-sm ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>No lesson notes yet.</p>
         ) : (
           <div className="space-y-3">
             {notes.slice(0, 3).map((n) => (
               <div key={n.id} className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-white">
+                  <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>
                     {n.title ?? `Note — ${fmtDate(n.lesson_date)}`}
                   </p>
                   {n.body && (
-                    <p className="mt-0.5 text-xs text-slate-400 line-clamp-2">
+                    <p className={`mt-0.5 text-xs line-clamp-2 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                       {n.body.content?.map((node: any) => node.content?.map((c: any) => c.text).join(' ')).join(' ') ?? ''}
                     </p>
                   )}
                 </div>
-                <span className="shrink-0 text-[10px] text-slate-500">{fmtDate(n.published_at)}</span>
+                <span className={`shrink-0 text-[10px] ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{fmtDate(n.published_at)}</span>
               </div>
             ))}
           </div>
@@ -808,6 +809,7 @@ function PracticeTab({ studentIds, students, gamified }: {
   students: Student[]
   gamified: boolean
 }) {
+  const { isDark } = useTheme()
   const [summaries, setSummaries] = useState<WeeklyPracticeSummary[]>([])
   const [events, setEvents] = useState<CalendarEvent[]>([])
   const [loading, setLoading] = useState(true)
@@ -838,11 +840,11 @@ function PracticeTab({ studentIds, students, gamified }: {
       .finally(() => setLoading(false))
   }, [studentIds])
 
-  if (loading) return <p className="text-sm text-slate-400">Loading…</p>
+  if (loading) return <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Loading…</p>
 
   const cardBg = gamified
-    ? '!bg-slate-800/60 !border-slate-700/40'
-    : '!bg-slate-800/50 !border-slate-700/50'
+    ? (isDark ? '!bg-slate-800/60 !border-slate-700/40' : '!bg-white !border-slate-200')
+    : (isDark ? '!bg-slate-800/50 !border-slate-700/50' : '!bg-white !border-slate-200')
 
   return (
     <div className="space-y-6">
@@ -862,10 +864,10 @@ function PracticeTab({ studentIds, students, gamified }: {
               <Card key={s.student_id} className={`${cardBg} p-5`}>
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <h3 className="text-base font-semibold text-white">
+                    <h3 className={`text-base font-semibold ${isDark ? 'text-white' : 'text-slate-800'}`}>
                       {st ? `${st.first_name} ${st.last_name}` : `Student ${s.student_id.slice(-4)}`}
                     </h3>
-                    <p className="text-xs text-slate-400 mt-0.5">
+                    <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                       {s.days_practiced ?? 0} days practiced this week
                     </p>
                   </div>
@@ -873,10 +875,10 @@ function PracticeTab({ studentIds, students, gamified }: {
                     {gamified && (
                       <div className="text-right">
                         <p className="text-lg font-bold text-amber-400">{xp} XP</p>
-                        <p className="text-[10px] text-slate-500">earned</p>
+                        <p className={`text-[10px] ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>earned</p>
                       </div>
                     )}
-                    <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${s.goal_met ? 'bg-indigo-500/20' : 'bg-amber-500/10'}`}>
+                    <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${s.goal_met ? (isDark ? 'bg-indigo-500/20' : 'bg-indigo-50') : (isDark ? 'bg-amber-500/10' : 'bg-amber-50')}`}>
                       <Flame className={`h-5 w-5 ${s.goal_met ? 'text-indigo-400' : 'text-amber-400'}`} />
                     </div>
                   </div>
@@ -884,11 +886,11 @@ function PracticeTab({ studentIds, students, gamified }: {
 
                 {/* Progress bar */}
                 <div className="mb-2">
-                  <div className="flex justify-between text-xs mb-1">
-                    <span className="text-slate-400">{s.total_minutes ?? 0} min</span>
-                    <span className="text-slate-500">Goal: 60 min/week</span>
+                  <div className={`flex justify-between text-xs mb-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                    <span>{s.total_minutes ?? 0} min</span>
+                    <span>Goal: 60 min/week</span>
                   </div>
-                  <div className="h-3 bg-slate-700 rounded-full overflow-hidden">
+                  <div className={`h-3 rounded-full overflow-hidden ${isDark ? 'bg-slate-700' : 'bg-slate-200'}`}>
                     <div
                       className={`h-full rounded-full transition-all duration-700 ${
                         gamified
@@ -901,27 +903,27 @@ function PracticeTab({ studentIds, students, gamified }: {
                 </div>
 
                 {/* Streak counter */}
-                <div className="flex items-center gap-4 mt-3 pt-3 border-t border-slate-700/50">
+                <div className={`flex items-center gap-4 mt-3 pt-3 border-t ${isDark ? 'border-slate-700/50' : 'border-slate-200'}`}>
                   <div className="flex items-center gap-1.5">
-                    <Flame className={`h-4 w-4 ${(st?.practice_streak ?? 0) >= 7 ? 'text-orange-400' : 'text-slate-500'}`} />
-                    <span className="text-sm font-medium text-white">{st?.practice_streak ?? 0}</span>
-                    <span className="text-xs text-slate-400">day streak</span>
+                    <Flame className={`h-4 w-4 ${(st?.practice_streak ?? 0) >= 7 ? 'text-orange-400' : (isDark ? 'text-slate-500' : 'text-slate-400')}`} />
+                    <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>{st?.practice_streak ?? 0}</span>
+                    <span className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>day streak</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <Trophy className="h-4 w-4 text-amber-400" />
-                    <span className="text-sm font-medium text-white">{st?.longest_practice_streak ?? 0}</span>
-                    <span className="text-xs text-slate-400">best streak</span>
+                    <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>{st?.longest_practice_streak ?? 0}</span>
+                    <span className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>best streak</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <Clock className="h-4 w-4 text-blue-400" />
-                    <span className="text-sm font-medium text-white">{st?.total_practice_minutes ?? 0}</span>
-                    <span className="text-xs text-slate-400">total min</span>
+                    <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>{st?.total_practice_minutes ?? 0}</span>
+                    <span className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>total min</span>
                   </div>
                   {gamified && (
                     <div className="flex items-center gap-1.5">
                       <Star className="h-4 w-4 text-purple-400" />
-                      <span className="text-sm font-medium text-white">{st?.level ?? 0}</span>
-                      <span className="text-xs text-slate-400">level</span>
+                      <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>{st?.level ?? 0}</span>
+                      <span className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>level</span>
                     </div>
                   )}
                 </div>
@@ -943,21 +945,21 @@ function PracticeTab({ studentIds, students, gamified }: {
       {/* Upcoming lessons (context for practice motivation) */}
       {events.length > 0 && (
         <Card className={`${cardBg} p-5`}>
-          <h3 className="text-sm font-semibold text-white mb-3">Upcoming Lessons</h3>
+          <h3 className={`text-sm font-semibold mb-3 ${isDark ? 'text-white' : 'text-slate-800'}`}>Upcoming Lessons</h3>
           <div className="space-y-2">
             {events.slice(0, 5).map((ev) => {
               const start = new Date(ev.start_time)
               return (
                 <div key={ev.id} className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2">
-                    <CalendarDays className="h-4 w-4 text-slate-500" />
-                    <span className="text-slate-300">
+                    <CalendarDays className={`h-4 w-4 ${isDark ? 'text-slate-500' : 'text-slate-400'}`} />
+                    <span className={isDark ? 'text-slate-300' : 'text-slate-600'}>
                       {DAYS[start.getDay()]} {start.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                       {' · '}
                       {start.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}
                     </span>
                   </div>
-                  <span className="text-xs text-slate-500">
+                  <span className={`text-xs ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
                     {ev.title ?? 'Lesson'}
                   </span>
                 </div>
@@ -973,6 +975,7 @@ function PracticeTab({ studentIds, students, gamified }: {
 // ─── Schedule Tab ────────────────────────────────────────────────────────────
 
 function ScheduleTab({ studentIds }: { studentIds: string[] }) {
+  const { isDark } = useTheme()
   const [events, setEvents] = useState<CalendarEvent[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -990,7 +993,9 @@ function ScheduleTab({ studentIds }: { studentIds: string[] }) {
       .finally(() => setLoading(false))
   }, [studentIds])
 
-  if (loading) return <p className="text-sm text-slate-400">Loading…</p>
+  if (loading) return <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Loading…</p>
+
+  const cardBg = isDark ? '!bg-slate-800/50 !border-slate-700/50' : ''
 
   return (
     <div>
@@ -1002,12 +1007,12 @@ function ScheduleTab({ studentIds }: { studentIds: string[] }) {
           {events.map((ev) => {
             const start = new Date(ev.start_time)
             return (
-              <Card key={ev.id} className="!bg-slate-800/50 !border-slate-700/50 flex items-center justify-between gap-3 p-4">
+              <Card key={ev.id} className={`${cardBg} flex items-center justify-between gap-3 p-4`}>
                 <div>
-                  <p className="text-sm font-medium text-white">
+                  <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>
                     {ev.title ?? (ev.is_group ? ev.group_name ?? 'Group Lesson' : 'Lesson')}
                   </p>
-                  <p className="mt-0.5 text-xs text-slate-400">
+                  <p className={`mt-0.5 text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                     {DAYS[start.getDay()]} {start.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                     {' · '}
                     {start.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}
@@ -1028,6 +1033,7 @@ function ScheduleTab({ studentIds }: { studentIds: string[] }) {
 // ─── Notes Tab ───────────────────────────────────────────────────────────────
 
 function NotesTab({ studentIds }: { studentIds: string[] }) {
+  const { isDark } = useTheme()
   const [notes, setNotes] = useState<LessonNote[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -1044,7 +1050,9 @@ function NotesTab({ studentIds }: { studentIds: string[] }) {
       .finally(() => setLoading(false))
   }, [studentIds])
 
-  if (loading) return <p className="text-sm text-slate-400">Loading…</p>
+  if (loading) return <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Loading…</p>
+
+  const cardBg = isDark ? '!bg-slate-800/50 !border-slate-700/50' : ''
 
   return (
     <div>
@@ -1054,19 +1062,19 @@ function NotesTab({ studentIds }: { studentIds: string[] }) {
       ) : (
         <div className="space-y-3">
           {notes.map((n) => (
-            <Card key={n.id} className="!bg-slate-800/50 !border-slate-700/50 p-4">
+            <Card key={n.id} className={`${cardBg} p-4`}>
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-white">
+                  <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>
                     {n.title ?? `Note — ${fmtDate(n.lesson_date)}`}
                   </p>
                   {n.body && (
-                    <p className="mt-1 text-xs text-slate-400 line-clamp-3">
+                    <p className={`mt-1 text-xs line-clamp-3 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                       {n.body.content?.map((node: any) => node.content?.map((c: any) => c.text).join(' ')).join(' ') ?? ''}
                     </p>
                   )}
                 </div>
-                <span className="shrink-0 text-[10px] text-slate-500">{fmtDate(n.published_at)}</span>
+                <span className={`shrink-0 text-[10px] ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{fmtDate(n.published_at)}</span>
               </div>
             </Card>
           ))}
@@ -1079,6 +1087,7 @@ function NotesTab({ studentIds }: { studentIds: string[] }) {
 // ─── Assignments Tab ─────────────────────────────────────────────────────────
 
 function AssignmentsTab({ studentIds }: { studentIds: string[] }) {
+  const { isDark } = useTheme()
   const [items, setItems] = useState<(AssignmentStudent & { assignment?: Assignment | null })[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -1096,7 +1105,9 @@ function AssignmentsTab({ studentIds }: { studentIds: string[] }) {
       .finally(() => setLoading(false))
   }, [studentIds])
 
-  if (loading) return <p className="text-sm text-slate-400">Loading…</p>
+  if (loading) return <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Loading…</p>
+
+  const cardBg = isDark ? '!bg-slate-800/50 !border-slate-700/50' : ''
 
   return (
     <div>
@@ -1106,17 +1117,17 @@ function AssignmentsTab({ studentIds }: { studentIds: string[] }) {
       ) : (
         <div className="space-y-3">
           {items.map((a) => (
-            <Card key={a.id} className="!bg-slate-800/50 !border-slate-700/50 p-4">
+            <Card key={a.id} className={`${cardBg} p-4`}>
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-white">
+                  <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>
                     {a.assignment?.title ?? 'Assignment'}
                   </p>
                   {a.assignment?.description && (
-                    <p className="mt-0.5 text-xs text-slate-400 line-clamp-2">{a.assignment.description}</p>
+                    <p className={`mt-0.5 text-xs line-clamp-2 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{a.assignment.description}</p>
                   )}
                   {a.assignment?.due_date && (
-                    <p className="mt-1 text-[10px] text-slate-500">Due: {fmtDate(a.assignment.due_date)}</p>
+                    <p className={`mt-1 text-[10px] ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Due: {fmtDate(a.assignment.due_date)}</p>
                   )}
                 </div>
                 <Badge variant={STATUS_BADGE[a.status] ?? 'slate'}>
@@ -1124,7 +1135,7 @@ function AssignmentsTab({ studentIds }: { studentIds: string[] }) {
                 </Badge>
               </div>
               {a.teacher_feedback && (
-                <div className="mt-2 rounded-lg bg-slate-900/50 p-2 text-xs text-slate-300">
+                <div className={`mt-2 rounded-lg p-2 text-xs ${isDark ? 'bg-slate-900/50 text-slate-300' : 'bg-slate-100 text-slate-600'}`}>
                   <span className="font-medium">Feedback: </span>{a.teacher_feedback}
                 </div>
               )}
@@ -1139,6 +1150,7 @@ function AssignmentsTab({ studentIds }: { studentIds: string[] }) {
 // ─── Billing Tab ─────────────────────────────────────────────────────────────
 
 function BillingTab({ familyId }: { familyId: string }) {
+  const { isDark } = useTheme()
   const [invoices, setInvoices] = useState<Invoice[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -1153,7 +1165,9 @@ function BillingTab({ familyId }: { familyId: string }) {
       .finally(() => setLoading(false))
   }, [familyId])
 
-  if (loading) return <p className="text-sm text-slate-400">Loading…</p>
+  if (loading) return <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Loading…</p>
+
+  const cardBg = isDark ? '!bg-slate-800/50 !border-slate-700/50' : ''
 
   return (
     <div>
@@ -1163,23 +1177,23 @@ function BillingTab({ familyId }: { familyId: string }) {
       ) : (
         <div className="space-y-3">
           {invoices.map((inv) => (
-            <Card key={inv.id} className="!bg-slate-800/50 !border-slate-700/50 p-4">
+            <Card key={inv.id} className={`${cardBg} p-4`}>
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-white">{inv.title ?? inv.invoice_number}</p>
-                  <p className="mt-0.5 text-xs text-slate-400">
+                  <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>{inv.title ?? inv.invoice_number}</p>
+                  <p className={`mt-0.5 text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                     {fmtDate(inv.due_date)} · {inv.invoice_number}
                   </p>
                 </div>
                 <Badge variant={STATUS_BADGE[inv.status] ?? 'slate'}>{inv.status.replace('_', ' ')}</Badge>
               </div>
-              <div className="mt-3 flex items-end justify-between border-t border-slate-700/50 pt-3">
-                <div className="text-xs text-slate-400">
+              <div className={`mt-3 flex items-end justify-between border-t pt-3 ${isDark ? 'border-slate-700/50' : 'border-slate-200'}`}>
+                <div className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                   {inv.amount_paid > 0 && <span>Paid {fmtCents(inv.amount_paid)} · </span>}
                   {inv.balance_due > 0 && <span className="font-medium text-red-400">Balance {fmtCents(inv.balance_due)}</span>}
                   {inv.balance_due <= 0 && <span className="font-medium text-indigo-400">Paid in full</span>}
                 </div>
-                <span className="text-lg font-semibold text-white">{fmtCents(inv.total)}</span>
+                <span className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-slate-800'}`}>{fmtCents(inv.total)}</span>
               </div>
             </Card>
           ))}
@@ -1192,6 +1206,7 @@ function BillingTab({ familyId }: { familyId: string }) {
 // ─── Resources Tab ───────────────────────────────────────────────────────────
 
 function ResourcesTab({ studentIds }: { studentIds: string[] }) {
+  const { isDark } = useTheme()
   const [items, setItems] = useState<(StudentResource & { resource?: Resource | null })[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
@@ -1226,7 +1241,9 @@ function ResourcesTab({ studentIds }: { studentIds: string[] }) {
     return () => clearTimeout(timer)
   }, [searchQuery])
 
-  if (loading) return <p className="text-sm text-slate-400">Loading…</p>
+  if (loading) return <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Loading…</p>
+
+  const cardBg = isDark ? '!bg-slate-800/50 !border-slate-700/50' : ''
 
   // Determine file type icon
   const getTypeIcon = (type: string) => {
@@ -1254,7 +1271,7 @@ function ResourcesTab({ studentIds }: { studentIds: string[] }) {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search your music library..."
-          className="w-full pl-10 pr-4 py-3 bg-slate-800/50 border border-slate-700/50 rounded-xl text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className={`w-full pl-10 pr-4 py-3 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${isDark ? 'bg-slate-800/50 border-slate-700/50 text-white placeholder-slate-400' : 'bg-white border-slate-200 text-slate-800 placeholder-slate-400'}`}
         />
         {searching && (
           <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -1273,23 +1290,23 @@ function ResourcesTab({ studentIds }: { studentIds: string[] }) {
             const res = item.resource ?? item
             const type = res.type ?? item.type ?? 'other'
             return (
-              <Card key={item.id || res.id} className="!bg-slate-800/50 !border-slate-700/50 flex items-center justify-between gap-3 p-4">
+              <Card key={item.id || res.id} className={`${cardBg} flex items-center justify-between gap-3 p-4`}>
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-700/50 shrink-0">
+                  <div className={`flex h-8 w-8 items-center justify-center rounded-lg shrink-0 ${isDark ? 'bg-slate-700/50' : 'bg-slate-100'}`}>
                     {getTypeIcon(type)}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-medium text-white">{res.title ?? 'Resource'}</p>
+                    <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>{res.title ?? 'Resource'}</p>
                     {res.description && (
-                      <p className="mt-0.5 text-xs text-slate-400 line-clamp-1">{res.description}</p>
+                      <p className={`mt-0.5 text-xs line-clamp-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{res.description}</p>
                     )}
                     {item.student_name && (
-                      <p className="mt-0.5 text-[10px] text-slate-500">For: {item.student_name}</p>
+                      <p className={`mt-0.5 text-[10px] ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>For: {item.student_name}</p>
                     )}
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
-                  <span className="text-[10px] text-slate-500">{fmtDate(item.assigned_at ?? res.created_at)}</span>
+                  <span className={`text-[10px] ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{fmtDate(item.assigned_at ?? res.created_at)}</span>
                   {res.file_url && (
                     <a href={res.file_url} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
                       <Download className="h-4 w-4" />
@@ -1309,6 +1326,7 @@ function ResourcesTab({ studentIds }: { studentIds: string[] }) {
 // ─── Forms Tab ───────────────────────────────────────────────────────────────
 
 function FormsTab({ familyId, studentIds }: { familyId: string; studentIds: string[] }) {
+  const { isDark } = useTheme()
   const [forms, setForms] = useState<Form[]>([])
   const [submissions, setSubmissions] = useState<FormSubmission[]>([])
   const [loading, setLoading] = useState(true)
@@ -1332,8 +1350,9 @@ function FormsTab({ familyId, studentIds }: { familyId: string; studentIds: stri
       .finally(() => setLoading(false))
   }, [familyId, studentIds])
 
-  if (loading) return <p className="text-sm text-slate-400">Loading…</p>
+  if (loading) return <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Loading…</p>
 
+  const cardBg = isDark ? '!bg-slate-800/50 !border-slate-700/50' : ''
   const submittedIds = new Set(submissions.map((s) => s.form_id))
 
   return (
@@ -1346,16 +1365,16 @@ function FormsTab({ familyId, studentIds }: { familyId: string; studentIds: stri
           {/* available forms */}
           {forms.length > 0 && (
             <div>
-              <h3 className="mb-2 text-sm font-semibold text-slate-300">Available Forms</h3>
+              <h3 className={`mb-2 text-sm font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Available Forms</h3>
               <div className="space-y-2">
                 {forms.map((f) => {
                   const done = submittedIds.has(f.id)
                   return (
-                    <Card key={f.id} className="!bg-slate-800/50 !border-slate-700/50 flex items-center justify-between gap-3 p-4">
+                    <Card key={f.id} className={`${cardBg} flex items-center justify-between gap-3 p-4`}>
                       <div className="min-w-0">
-                        <p className="text-sm font-medium text-white">{f.title}</p>
+                        <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>{f.title}</p>
                         {f.description && (
-                          <p className="mt-0.5 text-xs text-slate-400 line-clamp-1">{f.description}</p>
+                          <p className={`mt-0.5 text-xs line-clamp-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{f.description}</p>
                         )}
                       </div>
                       <Badge variant={done ? 'green' : 'amber'}>
@@ -1371,14 +1390,14 @@ function FormsTab({ familyId, studentIds }: { familyId: string; studentIds: stri
           {/* past submissions */}
           {submissions.length > 0 && (
             <div>
-              <h3 className="mb-2 text-sm font-semibold text-slate-300">Your Submissions</h3>
+              <h3 className={`mb-2 text-sm font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Your Submissions</h3>
               <div className="space-y-2">
                 {submissions.map((s) => (
-                  <Card key={s.id} className="!bg-slate-800/50 !border-slate-700/50 p-4">
-                    <p className="text-xs text-slate-400">
+                  <Card key={s.id} className={`${cardBg} p-4`}>
+                    <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                       Submitted {fmtDate(s.submitted_at)}
                     </p>
-                    <div className="mt-1 text-xs text-slate-500">
+                    <div className={`mt-1 text-xs ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
                       {Object.entries(s.data).map(([k, v]) => (
                         <span key={k} className="mr-3">{k}: {String(v)}</span>
                       ))}
