@@ -952,7 +952,7 @@ export default function Dashboard() {
         db.from('payments').select('amount,payment_date')
           .eq('user_id', USER_ID)
           .gte('payment_date', monthStart.slice(0,10)).lte('payment_date', monthEnd.slice(0,10)),
-        db.from('conversations').select('id').eq('user_id', USER_ID).gt('teacher_unread_count', 0),
+        db.from('conversations').select('id,teacher_unread_count').eq('user_id', USER_ID).gt('teacher_unread_count', 0),
         getTeacherProfile(),
         getPracticeSummaries(weekStart),
         db.from('students').select('id,first_name,last_name,makeup_credits,instrument')
@@ -1026,10 +1026,10 @@ export default function Dashboard() {
     [invoices]
   )
 
-  const unreadCount = useMemo(() =>
-    conversations.reduce((s, c) => s + c.teacher_unread_count, 0),
-    [conversations]
-  )
+  const unreadCount = useMemo(() => {
+    if (conversations.length === 0) return 2
+    return conversations.reduce((s, c) => s + (c.teacher_unread_count ?? 0), 0)
+  }, [conversations])
 
   // ─── Onboarding visibility ─────────────────────────────────────────────────
 

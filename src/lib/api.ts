@@ -62,7 +62,7 @@ export async function getDashboardData() {
     .gte('start_time', new Date().toISOString())
 
   // Unread conversations
-  const unread = await client.from('conversations').select('id').eq('user_id', currentUserId())
+  const unread = await client.from('conversations').select('id,teacher_unread_count').eq('user_id', currentUserId())
     .gt('teacher_unread_count', 0)
 
   // Active students (ordered by last name)
@@ -93,7 +93,7 @@ export async function getDashboardData() {
   return {
     openInvoiceCount: invoices.count ?? invoices.data?.length ?? 0,
     upcomingLessonCount: upcoming.count ?? upcoming.data?.length ?? 0,
-    unreadCount: unread.count ?? unread.data?.length ?? 0,
+    unreadCount: (unread.data ?? []).reduce((s: number, c: any) => s + (c.teacher_unread_count ?? 0), 0),
     activeStudents: students.data ?? [],
     monthRevenue: (payments.data ?? []).reduce((s: number, p: { amount?: number | null }) => s + (p.amount ?? 0), 0),
     draftNotes: drafts.data ?? [],

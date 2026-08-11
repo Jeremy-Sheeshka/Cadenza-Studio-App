@@ -609,8 +609,8 @@ export function createMockClient(): MockClient {
 
     // ─── conversations ─────────────────────────────────────────────────────
     conversations: [
-      { id: CON1, user_id: USER_ID, family_id: F1, teacher_unread_count: 0, family_unread_count: 2, last_message_at: iso(-1, 14, 0) },
-      { id: CON2, user_id: USER_ID, family_id: F2, teacher_unread_count: 1, family_unread_count: 0, last_message_at: iso(0, 9, 30) },
+      { id: CON1, user_id: USER_ID, family_id: F1, teacher_unread_count: 2, family_unread_count: 2, last_message_at: iso(-1, 14, 0) },
+      { id: CON2, user_id: USER_ID, family_id: F2, teacher_unread_count: 0, family_unread_count: 0, last_message_at: iso(0, 9, 30) },
     ],
     conversation_messages: [
       { id: '81000000-0000-4000-a000-000000000001', conversation_id: CON2, sender_type: 'family', body: 'Hi! Jordan will be 10 minutes late to his lesson tomorrow — soccer practice runs long.', created_at: iso(0, 9, 30), read_at: null },
