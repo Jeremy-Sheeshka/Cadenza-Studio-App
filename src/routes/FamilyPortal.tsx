@@ -24,7 +24,9 @@ async function safeGet<T>(path: string): Promise<T | null> {
     if (token) headers['Authorization'] = `Bearer ${token}`
     const res = await fetch(`${BASE}${path}`, { headers })
     if (!res.ok) return null
-    return (await res.json()) as T
+    const json = await res.json()
+    // Server wraps responses in { data: ... } — unwrap like serverApi.request does.
+    return (json.data ?? json) as T
   } catch { return null }
 }
 
@@ -107,7 +109,7 @@ export function FamilyLogin() {
         ...user,
       }))
       // 5. Redirect to family portal
-      window.location.hash = '#/family-portal'
+      window.location.href = '/family-portal'
     } catch (err: any) {
       setError(err.message || 'Login failed. Please check your email and password.')
     }
@@ -221,7 +223,7 @@ export function FamilyPortal() {
 
   const signOut = () => {
     sessionStorage.removeItem('cadenza_family_session')
-    window.location.hash = '#/family-login'
+    window.location.href = '/family-login'
   }
 
   if (!ready) {

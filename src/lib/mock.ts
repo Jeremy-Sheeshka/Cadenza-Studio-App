@@ -199,36 +199,36 @@ class QueryBuilder {
     }
   }
 
-  // Override then() for mutations
-  async then(resolve: (r: any) => void, reject?: (e: any) => void) {
-    try {
+  // Override then() — return a Promise that resolves to resolve(result), so both
+  // `await qb` and `qb.then(cb)` work (chained .then must propagate the value).
+  then(resolve: (r: any) => any, reject?: (e: any) => void) {
+    const run = (async () => {
       if (this._pendingMutation) {
         const mutated = await this.executeMutation()
         // Support .select().single() after mutation
         if (this.cols !== '*') {
           const projected = mutated.map((r) => this.project(r, this.cols))
-          resolve({ data: this.singleRow ? projected[0] : projected, error: null })
-        } else {
-          resolve({ data: this.singleRow ? mutated[0] : mutated, error: null })
+          return { data: this.singleRow ? projected[0] : projected, error: null }
         }
-      } else {
-        const rows = this.execute()
-        if (this.singleRow) {
-          resolve({ data: rows[0] ?? null, error: rows[0] ? null : { code: 'PGRST116' } })
-        } else {
-          resolve({ data: rows, error: null, count: rows.length })
-        }
+        return { data: this.singleRow ? mutated[0] : mutated, error: null }
       }
-    } catch (e) { reject?.(e) }
+      const rows = this.execute()
+      if (this.singleRow) {
+        return { data: rows[0] ?? null, error: rows[0] ? null : { code: 'PGRST116' } }
+      }
+      return { data: rows, error: null, count: rows.length }
+    })()
+    return run.then(resolve, reject)
   }
 }
 
 class RpcBuilder {
   constructor(private fn: string, private store: MockStore, private args?: Record<string, unknown>) {}
-  async then(resolve: (r: any) => void) {
-    await Promise.resolve()
-    const rpc = this.store.rpc as (fn: string, args?: Record<string, unknown>) => unknown
-    resolve({ data: rpc(this.fn, this.args), error: null })
+  then(resolve: (r: any) => any, reject?: (e: any) => void) {
+    return Promise.resolve().then(() => {
+      const rpc = this.store.rpc as (fn: string, args?: Record<string, unknown>) => unknown
+      return { data: rpc(this.fn, this.args), error: null }
+    }).then(resolve, reject)
   }
 }
 

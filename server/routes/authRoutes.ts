@@ -109,6 +109,11 @@ router.get('/me', authMiddleware, (req: Request, res: Response) => {
     res.status(404).json({ error: 'User not found' })
     return
   }
+  // Attach the linked family so the family portal can resolve it directly.
+  if (row.account_type === 'family') {
+    const family = db.prepare('SELECT * FROM families WHERE user_id = ?').get(row.id) as any
+    if (family) row.family = family
+  }
   res.json({ data: row })
 })
 

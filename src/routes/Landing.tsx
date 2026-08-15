@@ -66,12 +66,23 @@ export default function Landing() {
       }
       const json = await res.json()
       localStorage.setItem('cadenza_token', json.data.token)
+
+      // Fetch the full profile so the portals get the linked family (the login
+      // response alone doesn't include it for family/student accounts).
+      let me = json.data.user
+      try {
+        const meRes = await fetch(`${apiBase}/auth/me`, {
+          headers: { Authorization: `Bearer ${json.data.token}` },
+        })
+        if (meRes.ok) me = (await meRes.json()).data
+      } catch { /* keep login user as fallback */ }
+
       if (role === 'family') {
-        sessionStorage.setItem('cadenza_family_session', JSON.stringify({ token: json.data.token, ...json.data.user }))
+        sessionStorage.setItem('cadenza_family_session', JSON.stringify({ token: json.data.token, family: me.family ?? me, ...me }))
       }
       if (role === 'student') {
-        sessionStorage.setItem('cadenza_portal_access', JSON.stringify(json.data.user))
-        sessionStorage.setItem('cadenza_portal_family', JSON.stringify(json.data.user))
+        sessionStorage.setItem('cadenza_portal_access', JSON.stringify(me))
+        sessionStorage.setItem('cadenza_portal_family', JSON.stringify(me.family ?? null))
       }
       // Force full reload so AuthProvider picks up the token on mount
       window.location.href = DEMO_REDIRECT[role] || '/dashboard'

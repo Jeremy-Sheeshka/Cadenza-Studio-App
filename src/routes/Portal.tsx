@@ -67,10 +67,10 @@ export function StudentLogin() {
         // store portal session for the student portal page
         sessionStorage.setItem('cadenza_portal_family', JSON.stringify(user.family ?? null))
         sessionStorage.setItem('cadenza_portal_access', JSON.stringify(user))
-        window.location.hash = '#/student-portal'
+        window.location.href = '/student-portal'
       } else if (user.account_type === 'family') {
         sessionStorage.setItem('cadenza_family_session', JSON.stringify({ token: data.token, family: user.family ?? user, ...user }))
-        window.location.hash = '#/family-portal'
+        window.location.href = '/family-portal'
       } else {
         setError('This login is for students and families only.')
         localStorage.removeItem('cadenza_token')
@@ -256,29 +256,40 @@ export function StudentPortal() {
   // ── init: read family from sessionStorage ────────────────────────────────
 
   useEffect(() => {
+    const loadStudents = (fam: Family) => {
+      setFamily(fam)
+      db.from('students')
+        .select('*')
+        .eq('family_id', fam.id)
+        .eq('status', 'active')
+        .order('first_name', { ascending: true })
+        .then(({ data }: { data: Student[] | null }) => {
+          const list = data ?? []
+          setStudents(list)
+          if (list.length > 0) setSelectedStudentId(list[0].id)
+          setReady(true)
+        })
+        .catch(() => setReady(true))
+    }
+
     const raw = sessionStorage.getItem('cadenza_portal_family')
     if (raw) {
       try {
         const fam = JSON.parse(raw) as Family
-        setFamily(fam)
-        // load students for this family
-        db.from('students')
-          .select('*')
-          .eq('family_id', fam.id)
-          .eq('status', 'active')
-          .order('first_name', { ascending: true })
-          .then(({ data }: { data: Student[] | null }) => {
-            const list = data ?? []
-            setStudents(list)
-            if (list.length > 0) setSelectedStudentId(list[0].id)
-            setReady(true)
-          })
-          .catch(() => setReady(true))
-      } catch { setReady(true) }
-    } else {
-      // no family session — redirect to login
-      setReady(true)
+        if (fam && fam.id) { loadStudents(fam); return }
+      } catch { /* fall through to demo fallback */ }
     }
+    // Demo fallback: no/invalid portal session — load a sample family so the
+    // portal still renders with data in the standalone demo.
+    db.from('families')
+      .select('*')
+      .limit(1)
+      .then(({ data }: { data: Family[] | null }) => {
+        const fam = (data && data[0]) as Family | undefined
+        if (fam) loadStudents(fam)
+        else setReady(true)
+      })
+      .catch(() => setReady(true))
   }, [])
 
   // ── shared data ──────────────────────────────────────────────────────────
@@ -290,7 +301,7 @@ export function StudentPortal() {
   const signOut = () => {
     sessionStorage.removeItem('cadenza_portal_family')
     sessionStorage.removeItem('cadenza_portal_access')
-    window.location.hash = '#/student-login'
+    window.location.href = '/student-login'
   }
 
   if (!ready) {
