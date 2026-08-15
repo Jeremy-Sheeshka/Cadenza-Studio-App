@@ -1,5 +1,7 @@
 # Cadenza Studio — Self-Hosted Studio Management
 
+This program is still a work in progress and does not yet function as it should.
+`
 ## Quick Start
 
 ```bash
