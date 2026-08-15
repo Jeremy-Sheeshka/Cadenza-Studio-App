@@ -992,15 +992,23 @@ function SubscriptionTab() {
   const [dateTo, setDateTo] = useState('')
   const [exporting, setExporting] = useState(false)
 
+  // AI assistant toggle (default on)
+  const [aiEnabled, setAiEnabled] = useState(() => localStorage.getItem('cadenza_ai_assistant_enabled') !== 'false')
+
   useEffect(() => {
     getSubscription().then((s) => { setSub(s) }).finally(() => setLoading(false))
   }, [])
 
-  const isPro = sub?.is_pro ?? false
-
   const toastMsg = (msg: string) => {
     setToast(msg)
     setTimeout(() => setToast(null), 3000)
+  }
+
+  const toggleAI = () => {
+    const next = !aiEnabled
+    setAiEnabled(next)
+    localStorage.setItem('cadenza_ai_assistant_enabled', String(next))
+    window.dispatchEvent(new Event('cadenza-ai-toggle'))
   }
 
   const handleExport = async () => {
@@ -1029,40 +1037,54 @@ function SubscriptionTab() {
           <div>
             <h3 className="text-sm font-semibold text-slate-800">Current plan</h3>
             <div className="mt-1 flex items-center gap-2">
-              <Badge variant={isPro ? 'green' : 'slate'}>{sub.plan.display_name}</Badge>
-              <span className="text-xs text-slate-400">{sub.billing_interval === 'month' ? 'Monthly' : 'Annual'}</span>
+              <Badge variant="green">{sub.plan.display_name}</Badge>
+              <span className="text-xs text-slate-400">Self-hosted · every feature unlocked</span>
             </div>
           </div>
         </div>
 
         <div className="mt-4">
-          <h4 className="text-xs font-medium text-slate-500 mb-2">Plan features</h4>
-          <ul className="space-y-1.5">
+          <h4 className="text-xs font-medium text-slate-500 mb-2">Included features</h4>
+          <ul className="grid gap-1.5 sm:grid-cols-2">
             {(sub.plan.features ?? []).map((f, i) => (
               <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
                 <span className="mt-0.5 text-indigo-500">✓</span>
-                {f}
+                <span>{f}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="mt-5">
-          {isPro ? (
-            <Button
-              onClick={() => toastMsg('Opening Stripe billing portal…')}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white"
-            >
-              Manage Subscription
-            </Button>
-          ) : (
-            <Button
-              onClick={() => toastMsg('Redirecting to upgrade…')}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white"
-            >
-              Upgrade to Pro
-            </Button>
-          )}
+        {/* Networking — the only premium */}
+        <div className="mt-5 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4">
+          <p className="text-sm font-semibold text-slate-800">Network collaboration</p>
+          <p className="mt-0.5 text-xs text-slate-500">
+            The only premium add-on: invite other teachers, share your studio remotely, and manage multiple locations. Everything else is included in your local copy.
+          </p>
+          <Button variant="outline" className="mt-3" onClick={() => toastMsg('Network collaboration is available in the hosted edition.')}>
+            Learn about Studio Network
+          </Button>
+        </div>
+      </Card>
+
+      {/* AI Assistant */}
+      <Card className="p-4">
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <h3 className="text-sm font-semibold text-slate-800">AI Assistant</h3>
+            <p className="mt-0.5 text-xs text-slate-500">
+              A local helper that retrieves from your students, notes, schedule, invoices, and library to draft messages and answer questions. On by default — turn off to hide it.
+            </p>
+          </div>
+          <button
+            onClick={toggleAI}
+            className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${aiEnabled ? 'bg-indigo-600' : 'bg-slate-300'}`}
+            role="switch"
+            aria-checked={aiEnabled}
+            title={aiEnabled ? 'Turn AI assistant off' : 'Turn AI assistant on'}
+          >
+            <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all ${aiEnabled ? 'left-[1.375rem]' : 'left-0.5'}`} />
+          </button>
         </div>
       </Card>
 

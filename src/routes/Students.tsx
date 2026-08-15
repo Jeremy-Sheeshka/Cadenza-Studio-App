@@ -847,7 +847,7 @@ function OverviewTab({
           </dl>
         </Card>
         {student.notes && (
-          <Card className="p-4" className="md:col-span-2">
+          <Card className="p-4 md:col-span-2">
             <h2 className="mb-3 text-sm font-semibold text-slate-800">Notes</h2>
             <p className="text-sm text-slate-600 whitespace-pre-wrap">{student.notes}</p>
           </Card>

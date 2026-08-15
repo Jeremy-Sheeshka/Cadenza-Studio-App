@@ -18,7 +18,7 @@ import {
   Mail, Lock, Eye, EyeOff, LogOut,
   LayoutDashboard, CalendarDays, FileText, ClipboardList,
   CreditCard, FolderOpen, FormInput,
-  Trophy, TrendingUp, Music, Bell, ChevronRight, ExternalLink, Clock,
+  Trophy, TrendingUp, Music, Bell, ChevronRight, ChevronDown, ExternalLink, Clock,
   Flame, Star, Zap, Sparkles, Search, Download, Play, BookOpen, CheckCircle,
 } from 'lucide-react'
 
@@ -238,6 +238,8 @@ export function StudentPortal() {
   const [students, setStudents] = useState<Student[]>([])
   const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null)
   const [ready, setReady] = useState(false)
+  const [switcherOpen, setSwitcherOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   // gamified mode toggle
   const [gamified, setGamified] = useState(() => {
@@ -329,50 +331,103 @@ export function StudentPortal() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            {/* Student switcher */}
             {students.length > 1 && (
-              <select
-                className={`h-9 rounded-lg border px-3 text-sm outline-none focus:border-blue-500 ${isDark ? 'bg-slate-800/50 border-slate-600 text-white' : 'bg-white border-slate-300 text-slate-800'}`}
-                value={selId ?? ''}
-                onChange={(e) => setSelectedStudentId(e.target.value)}
-              >
-                {students.map((s) => (
-                  <option key={s.id} value={s.id}>{s.first_name} {s.last_name}</option>
-                ))}
-              </select>
+              <div className="relative">
+                <button
+                  onClick={() => setSwitcherOpen((o) => !o)}
+                  className={`flex h-9 items-center gap-2 rounded-full border pl-1 pr-2.5 text-sm transition-colors ${
+                    isDark ? 'border-slate-600 bg-slate-800/60 hover:bg-slate-700' : 'border-slate-200 bg-white hover:bg-slate-50'
+                  }`}
+                >
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 text-[11px] font-bold text-white">
+                    {selectedStudent ? selectedStudent.first_name[0]?.toUpperCase() : '?'}
+                  </span>
+                  <span className={`font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>
+                    {selectedStudent ? selectedStudent.first_name : 'Select'}
+                  </span>
+                  <ChevronDown className={`h-4 w-4 ${isDark ? 'text-slate-400' : 'text-slate-500'}`} />
+                </button>
+                {switcherOpen && (
+                  <>
+                    <div className="fixed inset-0 z-30" onClick={() => setSwitcherOpen(false)} />
+                    <div className={`absolute right-0 z-40 mt-2 w-56 overflow-hidden rounded-xl border shadow-lg ${isDark ? 'border-slate-700 bg-slate-800' : 'border-slate-200 bg-white'}`}>
+                      {students.map((s) => (
+                        <button
+                          key={s.id}
+                          onClick={() => { setSelectedStudentId(s.id); setSwitcherOpen(false) }}
+                          className={`flex w-full items-center gap-2 px-3 py-2 text-sm text-left transition-colors ${
+                            s.id === selId
+                              ? (isDark ? 'bg-blue-500/20 text-white' : 'bg-blue-50 text-blue-800')
+                              : (isDark ? 'text-slate-300 hover:bg-slate-700' : 'text-slate-700 hover:bg-slate-50')
+                          }`}
+                        >
+                          <span className={`flex h-7 w-7 items-center justify-center rounded-full text-[11px] font-bold ${s.id === selId ? 'bg-blue-600 text-white' : (isDark ? 'bg-slate-600 text-white' : 'bg-slate-200 text-slate-700')}`}>
+                            {s.first_name[0]?.toUpperCase()}
+                          </span>
+                          <span className="truncate">{s.first_name} {s.last_name}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
             )}
 
             {/* Gamified toggle */}
             <button
               onClick={toggleGamified}
-              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-medium transition-all ${
+              className={`flex h-9 items-center gap-1.5 rounded-full px-3 text-xs font-medium transition-all ${
                 gamified
                   ? 'bg-gradient-to-r from-amber-400 to-orange-500 text-white shadow-sm shadow-amber-500/30'
-                  : `${isDark ? 'bg-slate-700 text-slate-300 hover:bg-slate-600' : 'bg-slate-200 text-slate-600 hover:bg-slate-300'}`
+                  : `${isDark ? 'border border-slate-600 bg-slate-800/60 text-slate-300 hover:bg-slate-700' : 'border border-slate-200 bg-white text-slate-600 hover:bg-slate-50'}`
               }`}
             >
-              {gamified ? <Zap className="h-3 w-3" /> : <BookOpen className="h-3 w-3" />}
-              {gamified ? 'Gamified 🎮' : 'Standard 📋'}
+              {gamified ? <Zap className="h-3.5 w-3.5" /> : <BookOpen className="h-3.5 w-3.5" />}
+              <span className="hidden sm:inline">{gamified ? 'Gamified' : 'Standard'}</span>
             </button>
 
-            {/* Theme toggle */}
-            <button onClick={toggle} className={`flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-medium transition-colors ${isDark ? 'bg-slate-700 text-slate-300 hover:bg-slate-600' : 'bg-slate-200 text-slate-600 hover:bg-slate-300'}`}>
-              {isDark ? '☀️' : '🌙'}
-            </button>
-
-            <button
-              onClick={signOut}
-              className={`flex items-center gap-1.5 text-xs transition-colors ${isDark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-700'}`}
-            >
-              <LogOut className="h-4 w-4" />
-              Sign out
-            </button>
+            {/* Account menu */}
+            <div className="relative">
+              <button
+                onClick={() => setMenuOpen((o) => !o)}
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-xs font-bold text-white shadow-sm"
+                title={family.name}
+              >
+                {family.name.slice(0, 2).toUpperCase()}
+              </button>
+              {menuOpen && (
+                <>
+                  <div className="fixed inset-0 z-30" onClick={() => setMenuOpen(false)} />
+                  <div className={`absolute right-0 z-40 mt-2 w-56 overflow-hidden rounded-xl border p-1 shadow-lg ${isDark ? 'border-slate-700 bg-slate-800' : 'border-slate-200 bg-white'}`}>
+                    <div className="px-3 py-2">
+                      <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>{family.name}</p>
+                      <p className={`text-[11px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Family account</p>
+                    </div>
+                    <div className={`my-1 h-px ${isDark ? 'bg-slate-700' : 'bg-slate-100'}`} />
+                    <button
+                      onClick={() => { toggle(); setMenuOpen(false) }}
+                      className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm ${isDark ? 'text-slate-300 hover:bg-slate-700' : 'text-slate-700 hover:bg-slate-50'}`}
+                    >
+                      {isDark ? '☀️' : '🌙'} {isDark ? 'Light mode' : 'Dark mode'}
+                    </button>
+                    <button
+                      onClick={() => { signOut(); setMenuOpen(false) }}
+                      className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm ${isDark ? 'text-red-400 hover:bg-red-900/20' : 'text-red-600 hover:bg-red-50'}`}
+                    >
+                      <LogOut className="h-4 w-4" /> Sign out
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Tab bar */}
-        <div className="mx-auto max-w-5xl px-2">
-          <nav className="flex gap-0.5 overflow-x-auto scrollbar-none">
+        {/* Tab dock (desktop / tablet) */}
+        <div className="mx-auto max-w-5xl px-4 pb-3 hidden md:block">
+          <nav className={`inline-flex max-w-full items-center gap-1 overflow-x-auto scrollbar-none rounded-full p-1 ${isDark ? 'bg-slate-800/80' : 'bg-slate-100'}`}>
             {TABS.map((t) => {
               const Icon = t.icon
               const active = tab === t.key
@@ -380,10 +435,10 @@ export function StudentPortal() {
                 <button
                   key={t.key}
                   onClick={() => setTab(t.key)}
-                  className={`flex shrink-0 items-center gap-1.5 px-3 py-3 text-xs font-medium border-b-2 transition-colors whitespace-nowrap ${
+                  className={`flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all whitespace-nowrap ${
                     active
-                      ? 'border-blue-500 text-blue-400'
-                      : `border-transparent transition-colors ${isDark ? 'text-slate-500 hover:text-slate-300' : 'text-slate-500 hover:text-slate-700'}`
+                      ? 'bg-blue-600 text-white shadow-sm'
+                      : isDark ? 'text-slate-300 hover:text-white' : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
                   <Icon className="h-4 w-4" />
@@ -396,7 +451,7 @@ export function StudentPortal() {
       </header>
 
       {/* Content */}
-      <div className="mx-auto max-w-5xl px-4 py-6">
+      <div className="mx-auto max-w-5xl px-4 py-6 pb-24 md:pb-6">
         {tab === 'home' && <HomeTab studentIds={studentIds} selId={selId} students={students} selectedStudent={selectedStudent} family={family} gamified={gamified} />}
         {tab === 'practice' && <PracticeTab studentIds={studentIds} students={students} gamified={gamified} />}
         {tab === 'schedule' && <ScheduleTab studentIds={studentIds} />}
@@ -406,6 +461,28 @@ export function StudentPortal() {
         {tab === 'resources' && <ResourcesTab studentIds={studentIds} />}
         {tab === 'forms' && <FormsTab familyId={familyId!} studentIds={studentIds} />}
       </div>
+
+      {/* Mobile bottom tab bar */}
+      <nav className={`fixed inset-x-0 bottom-0 z-30 md:hidden flex items-center gap-1 overflow-x-auto scrollbar-none border-t px-2 py-2 backdrop-blur-xl ${isDark ? 'bg-slate-900/90 border-slate-700' : 'bg-white/90 border-slate-200'}`}>
+        {TABS.map((t) => {
+          const Icon = t.icon
+          const active = tab === t.key
+          return (
+            <button
+              key={t.key}
+              onClick={() => setTab(t.key)}
+              className={`flex shrink-0 flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 text-[10px] font-medium transition-colors ${
+                active
+                  ? (isDark ? 'text-white' : 'text-blue-700')
+                  : (isDark ? 'text-slate-400' : 'text-slate-500')
+              }`}
+            >
+              <Icon className="h-4 w-4" />
+              {t.label}
+            </button>
+          )
+        })}
+      </nav>
     </div>
   )
 }

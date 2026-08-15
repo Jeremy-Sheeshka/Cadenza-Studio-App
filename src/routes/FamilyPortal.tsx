@@ -191,6 +191,7 @@ export function FamilyPortal() {
   const [family, setFamily] = useState<Family | null>(null)
   const [students, setStudents] = useState<Student[]>([])
   const [ready, setReady] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     const raw = sessionStorage.getItem('cadenza_family_session')
@@ -261,22 +262,45 @@ export function FamilyPortal() {
           </div>
 
           <div className="flex items-center gap-3">
-            <button onClick={toggle} className="flex items-center gap-1 text-xs text-slate-400 hover:text-slate-600 transition-colors">
-              {isDark ? '☀️' : '🌙'}
-            </button>
-            <button
-              onClick={signOut}
-              className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-600 transition-colors"
-            >
-            <LogOut className="h-4 w-4" />
-            Sign out
-          </button>
+            <div className="relative">
+              <button
+                onClick={() => setMenuOpen((o) => !o)}
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-xs font-bold text-white shadow-sm"
+                title={family.name}
+              >
+                {family.name.slice(0, 2).toUpperCase()}
+              </button>
+              {menuOpen && (
+                <>
+                  <div className="fixed inset-0 z-30" onClick={() => setMenuOpen(false)} />
+                  <div className="absolute right-0 z-40 mt-2 w-56 overflow-hidden rounded-xl border border-slate-200 bg-white p-1 shadow-lg">
+                    <div className="px-3 py-2">
+                      <p className="text-sm font-medium text-slate-800">{family.name}</p>
+                      <p className="text-[11px] text-slate-500">Family account</p>
+                    </div>
+                    <div className="my-1 h-px bg-slate-100" />
+                    <button
+                      onClick={() => { toggle(); setMenuOpen(false) }}
+                      className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                    >
+                      {isDark ? '☀️' : '🌙'} {isDark ? 'Light mode' : 'Dark mode'}
+                    </button>
+                    <button
+                      onClick={() => { signOut(); setMenuOpen(false) }}
+                      className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-red-600 hover:bg-red-50"
+                    >
+                      <LogOut className="h-4 w-4" /> Sign out
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Tab bar */}
-        <div className="mx-auto max-w-5xl px-2">
-          <nav className="flex gap-0.5 overflow-x-auto">
+        {/* Tab dock */}
+        <div className="mx-auto max-w-5xl px-4 pb-3">
+          <nav className="inline-flex max-w-full items-center gap-1 overflow-x-auto scrollbar-none rounded-full bg-slate-100 p-1">
             {FAMILY_TABS.map((t) => {
               const Icon = t.icon
               const active = tab === t.key
@@ -284,10 +308,10 @@ export function FamilyPortal() {
                 <button
                   key={t.key}
                   onClick={() => setTab(t.key)}
-                  className={`flex shrink-0 items-center gap-1.5 px-4 py-3 text-xs font-medium border-b-2 transition-colors whitespace-nowrap ${
+                  className={`flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all whitespace-nowrap ${
                     active
-                      ? 'border-blue-500 text-blue-700'
-                      : 'border-transparent text-slate-500 hover:text-slate-700'
+                      ? 'bg-blue-600 text-white shadow-sm'
+                      : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
                   <Icon className="h-4 w-4" />
@@ -298,6 +322,14 @@ export function FamilyPortal() {
           </nav>
         </div>
       </header>
+
+      {/* Breadcrumb */}
+      <div className="mx-auto max-w-5xl px-4 pt-4">
+        <p className="text-[11px] uppercase tracking-wider text-slate-400">
+          Cadenza Family <span className="mx-1 text-slate-300">/</span>
+          <span className="font-medium text-slate-600">{FAMILY_TABS.find((t) => t.key === tab)?.label}</span>
+        </p>
+      </div>
 
       {/* Content */}
       <div className="mx-auto max-w-5xl px-4 py-6">

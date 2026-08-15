@@ -247,6 +247,39 @@ export async function getConversationMessages(conversationId: string): Promise<C
   return data
 }
 
+// ---- sidebar badges --------------------------------------------------------
+
+export async function getSidebarCounts() {
+  const now = new Date()
+  const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString()
+  const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1).toISOString()
+  const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
+
+  const [unread, todayEvents, overdue] = await Promise.all([
+    db.from('conversations')
+      .select('id,teacher_unread_count')
+      .eq('user_id', currentUserId())
+      .gt('teacher_unread_count', 0),
+    db.from('events')
+      .select('id')
+      .eq('user_id', currentUserId())
+      .eq('status', 'scheduled')
+      .gte('start_time', startOfDay)
+      .lt('start_time', endOfDay),
+    db.from('invoices')
+      .select('id')
+      .eq('user_id', currentUserId())
+      .in('status', ['sent', 'partially_paid', 'overdue'])
+      .lt('due_date', todayStr),
+  ])
+
+  return {
+    unreadCount: (unread.data ?? []).reduce((s: number, c: any) => s + (c.teacher_unread_count ?? 0), 0),
+    todayLessonCount: todayEvents.data?.length ?? 0,
+    overdueInvoiceCount: overdue.data?.length ?? 0,
+  }
+}
+
 // ---- families ------------------------------------------------------------
 
 export async function getFamilies(): Promise<Family[]> {
